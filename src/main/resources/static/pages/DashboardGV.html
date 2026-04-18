@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Giảng viên - Hệ thống PBL</title>
+    <link rel="stylesheet" href="../css/Dashboard.css">
+    <link rel="stylesheet" href="../css/DashboardExt.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fas fa-book-open"></i>
+            <div>
+                <h1>Hệ thống PBL</h1>
+                <p>Project-Based Learning Portal</p>
+            </div>
+        </div>
+        <div class="user-email">
+            <i class="fas fa-user-tie"></i> giangvien@gmail.com
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="welcome-text">
+            <h2>Dashboard Giảng viên</h2>
+            <p>Chào mừng bạn đến với Hệ thống quản lý PBL dành cho Giảng viên</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card clickable" onclick="window.location.href='MyClassesGV.html'">
+                <div class="icon-box blue"><i class="fas fa-chalkboard-teacher"></i></div>
+                <h3>Lớp PBL của tôi</h3>
+                <p>Xem và quản lý các lớp học PBL mà bạn đang hướng dẫn</p>
+            </div>
+
+            <div class="card">
+                <div class="icon-box blue"><i class="fas fa-tasks"></i></div>
+                <h3>Quản lý deadline và nhiệm vụ</h3>
+                <p>Giao việc, theo dõi tiến độ và chấm điểm cho sinh viên</p>
+            </div>
+
+
+
+            <div class="card account-card">
+                <div class="icon-box gray"><i class="fas fa-user"></i></div>
+                <h3>Tài khoản</h3>
+                <button class="btn btn-outline">Xem Profile</button>
+                <button class="btn btn-outline"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <h3>Thống kê tổng quan</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="4">0</span>
+                    <p>Lớp đang phụ trách</p>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="15">0</span>
+                    <p>Nhiệm vụ cần duyệt</p>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="20">0</span>
+                    <p>Đồ án đã hướng dẫn</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/DashboardGV.js"></script>
+</body>
+</html>
