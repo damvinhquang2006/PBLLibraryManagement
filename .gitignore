@@ -28,6 +28,8 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+/node_modules/
+/PBL3_manage-PBL-master/
 
 ### VS Code ###
 .vscode/
