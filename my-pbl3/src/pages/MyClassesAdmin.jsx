@@ -67,7 +67,7 @@ const MyClassesAdmin = () => {
                             <div 
                                 className="menu-item" 
                                 onClick={() => { setShowMenu(false); /* navigate to profile */ }}
-                                style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.2s' }}
+                                style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.2s', color: '#003366' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                             >
