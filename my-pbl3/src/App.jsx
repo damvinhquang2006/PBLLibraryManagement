@@ -7,6 +7,10 @@ import Login from './pages/Login';
 import DashboardSV from './pages/DashboardSV';
 import DashboardGV from './pages/DashboardGV';
 import DashboardAdmin from './pages/DashboardAdmin';
+import MyClassesAdmin from './pages/MyClassesAdmin';
+import MyClassesGV from './pages/MyClassesGV';
+import ClassDashboardGV from './pages/ClassDashboardGV';
+import ClassDashboardSV from './pages/ClassDashboardSV';
 
 // ==========================================
 // DEV UI GALLERY - Chỉ dùng để test giao diện
@@ -109,6 +113,10 @@ function App() {
         <Route path="/dashboard-sv" element={<DashboardSV />} />
         <Route path="/dashboard-gv" element={<DashboardGV />} />
         <Route path="/dashboard-admin" element={<DashboardAdmin />} />
+        <Route path="/my-classes-admin" element={<MyClassesAdmin />} />
+        <Route path="/my-classes-gv" element={<MyClassesGV />} />
+        <Route path="/class-dashboard-gv" element={<ClassDashboardGV />} />
+        <Route path="/class-dashboard-sv" element={<ClassDashboardSV />} />
 
         {/* 🛠 Route để test UI - truy cập /dev-ui */}
         <Route path="/dev-ui" element={<DevUIGallery />} />

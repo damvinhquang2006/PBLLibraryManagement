@@ -51,7 +51,7 @@ const DashboardGuest = () => {
                     
                     {/* Card Đăng nhập đã được loại bỏ, chỉ giữ lại Thư viện PBL */}
                     <div className="card clickable" onClick={() => navigate('#')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
-                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px' }}>
+                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-columns" style={{ fontSize: '24px' }}></i>
                         </div>
                         <h3 style={{ marginBottom: '15px' }}>Thư viện PBL</h3>

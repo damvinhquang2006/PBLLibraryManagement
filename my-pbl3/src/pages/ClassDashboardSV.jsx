@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/Dashboard.css';
 import '../css/DashboardExt.css';
 
-const DashboardGV = () => {
+const ClassDashboardSV = () => {
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
 
@@ -18,7 +18,7 @@ const DashboardGV = () => {
                         <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
                     </div>
                 </div>
-                
+
                 <div style={{ position: 'relative' }}>
                     <div 
                         className="user-info clickable" 
@@ -38,8 +38,8 @@ const DashboardGV = () => {
                             userSelect: 'none'
                         }}
                     >
-                        <i className="fas fa-user-tie" style={{ fontSize: '18px' }}></i> 
-                        giangvien@gmail.com
+                        <i className="fas fa-user-circle" style={{ fontSize: '18px' }}></i> 
+                        nguyennhuquynh.bkdn@gmail.com
                         <i className={`fas fa-chevron-${showMenu ? 'up' : 'down'}`} style={{ fontSize: '12px', marginLeft: '5px' }}></i>
                     </div>
 
@@ -58,7 +58,7 @@ const DashboardGV = () => {
                             <div 
                                 className="menu-item" 
                                 onClick={() => { setShowMenu(false); /* navigate to profile */ }}
-                                style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.2s' }}
+                                style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.2s', color: '#003366' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                             >
@@ -79,51 +79,43 @@ const DashboardGV = () => {
             </header>
 
             <main className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '50px 20px' }}>
-                <div className="welcome-text" style={{ textAlign: 'center', marginBottom: '50px' }}>
-                    <h2 style={{ color: '#003366', fontSize: '2.2rem', marginBottom: '10px' }}>Dashboard Giảng viên</h2>
-                    <p style={{ color: '#666', fontSize: '1.1rem' }}>Chào mừng bạn đến với Hệ thống quản lý PBL dành cho Giảng viên</p>
+                <div className="class-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+                    <button 
+                        onClick={() => navigate('/dashboard-sv')} 
+                        className="back-btn"
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', border: 'none', background: 'none', color: '#003366', cursor: 'pointer', fontWeight: 'bold' }}
+                    >
+                        <i className="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                    <h2 style={{ color: '#003366', margin: 0 }}>Không gian lớp học: Lập trình PBL</h2>
+                    <div style={{ width: '150px' }}></div>
                 </div>
 
-                <div className="card-grid" style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
-                    
-                    <div className="card clickable" onClick={() => navigate('/my-classes-gv')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
-                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
-                            <i className="fas fa-chalkboard-teacher" style={{ fontSize: '24px' }}></i>
+                <div className="card-grid" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {[
+                        { title: 'Danh sách sinh viên', icon: 'fa-users' },
+                        { title: 'Tạo/ tham gia nhóm', icon: 'fa-user-friends' },
+                        { title: 'Đăng ký đề tài PBL', icon: 'fa-edit' },
+                        { title: 'Theo dõi kế hoạch', icon: 'fa-calendar-alt' },
+                        { title: 'Nộp báo cáo tiến độ', icon: 'fa-file-upload' },
+                        { title: 'Nộp báo cáo PBL cuối kỳ', icon: 'fa-file-archive' },
+                        { title: 'Xem kết quả đánh giá', icon: 'fa-star' }
+                    ].map((item, idx) => (
+                        <div 
+                            key={idx} 
+                            className="card clickable" 
+                            style={{ flex: '0 1 280px', textAlign: 'center', padding: '30px 20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', border: '1px solid #eee' }}
+                        >
+                            <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '15px', borderRadius: '8px' }}>
+                                <i className={`fas ${item.icon}`} style={{ fontSize: '24px' }}></i>
+                            </div>
+                            <h3 style={{ fontSize: '17px', color: '#333' }}>{item.title}</h3>
                         </div>
-                        <h3 style={{ marginBottom: '15px' }}>Lớp PBL của tôi</h3>
-                        <p style={{ color: '#666' }}>Xem và quản lý các lớp học PBL mà bạn đang hướng dẫn</p>
-                    </div>
-
-                    <div className="card clickable" onClick={() => navigate('#')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
-                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
-                            <i className="fas fa-tasks" style={{ fontSize: '24px' }}></i>
-                        </div>
-                        <h3 style={{ marginBottom: '15px' }}>Quản lý deadline và nhiệm vụ</h3>
-                        <p style={{ color: '#666' }}>Giao việc, theo dõi tiến độ và chấm điểm cho sinh viên</p>
-                    </div>
-
-                </div>
-
-                <div className="stats-card" style={{ marginTop: '50px', background: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', border: '1px solid #eee' }}>
-                    <h3 style={{ color: '#003366', marginBottom: '30px', textAlign: 'center' }}>Thống kê tổng quan</h3>
-                    <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
-                        <div className="stat-item" style={{ textAlign: 'center', padding: '20px', borderRight: '1px solid #eee' }}>
-                            <span className="stat-number" style={{ display: 'block', fontSize: '2.5rem', fontWeight: 'bold', color: '#003366' }}>4</span>
-                            <p style={{ color: '#666', marginTop: '10px' }}>Lớp đang phụ trách</p>
-                        </div>
-                        <div className="stat-item" style={{ textAlign: 'center', padding: '20px', borderRight: '1px solid #eee' }}>
-                            <span className="stat-number" style={{ display: 'block', fontSize: '2.5rem', fontWeight: 'bold', color: '#003366' }}>15</span>
-                            <p style={{ color: '#666', marginTop: '10px' }}>Nhiệm vụ cần duyệt</p>
-                        </div>
-                        <div className="stat-item" style={{ textAlign: 'center', padding: '20px' }}>
-                            <span className="stat-number" style={{ display: 'block', fontSize: '2.5rem', fontWeight: 'bold', color: '#003366' }}>20</span>
-                            <p style={{ color: '#666', marginTop: '10px' }}>Đồ án đã hướng dẫn</p>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </main>
         </div>
     );
 };
 
-export default DashboardGV;
+export default ClassDashboardSV;
