@@ -12,7 +12,7 @@ body {
     background: white;
     padding: 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 450px;
 }
@@ -30,7 +30,10 @@ body {
     margin: 0 auto 1.5rem auto;
 }
 
-.title-dangnhap { color: #003366; font-weight: 600; }
+.title-dangnhap {
+    color: #003366;
+    font-weight: 600;
+}
 
 .role-option {
     border: 1px solid #dee2e6;
@@ -49,11 +52,25 @@ body {
     font-weight: bold;
 }
 
-.role-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.role-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
 
-.input-group-text { background-color: white; border-right: none; color: #6c757d; }
-.form-control { border-left: none; }
-.form-control:focus { box-shadow: none; border-color: #dee2e6; }
+.input-group-text {
+    background-color: white;
+    border-right: none;
+    color: #6c757d;
+}
+
+.form-control {
+    border-left: none;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
 
 .btn-dangnhap {
     background-color: #003366;
@@ -63,4 +80,7 @@ body {
     padding: 12px;
 }
 
-.btn-dangnhap:hover { background-color: #002244; color: white; }
+.btn-dangnhap:hover {
+    background-color: #002244;
+    color: white;
+}

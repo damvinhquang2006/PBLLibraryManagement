@@ -5,15 +5,16 @@
     --border-color: #e0e0e0;
 }
 
-body {
+.dashboard-body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-light);
     margin: 0;
     color: #333;
+    min-height: 100vh;
 }
 
 /* Navbar */
-.navbar {
+.dashboard-body .navbar {
     background-color: var(--primary-color);
     color: white;
     padding: 10px 50px;
@@ -28,7 +29,7 @@ body {
 .logo p { font-size: 0.8rem; margin: 0; opacity: 0.8; }
 
 /* Container */
-.container {
+.dashboard-body .container {
     max-width: 1100px;
     margin: 40px auto;
     padding: 0 20px;
@@ -47,7 +48,7 @@ body {
 }
 
 /* Card Style */
-.card {
+.dashboard-body .card {
     background: white;
     padding: 40px 20px;
     border-radius: 8px;
