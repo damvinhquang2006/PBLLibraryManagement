@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Dashboard.css';
 import '../css/DashboardExt.css';
+import { useAuth } from '../context/AuthContext';
 
 const ClassDashboardGV = () => {
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
     const [showMenu, setShowMenu] = useState(false);
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     return (
         <div className="dashboard-body" style={{ position: 'absolute', top: 0, left: 0, width: '100vw', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
@@ -38,8 +45,11 @@ const ClassDashboardGV = () => {
                             userSelect: 'none'
                         }}
                     >
-                        <i className="fas fa-user-tie" style={{ fontSize: '18px' }}></i> 
-                        giangvien@gmail.com
+                        {user?.avatar 
+                            ? <img src={user.avatar} alt="avatar" style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover' }} />
+                            : <i className="fas fa-user-tie" style={{ fontSize: '18px' }}></i>
+                        }
+                        {user?.email ?? 'Giảng viên'}
                         <i className={`fas fa-chevron-${showMenu ? 'up' : 'down'}`} style={{ fontSize: '12px', marginLeft: '5px' }}></i>
                     </div>
 
@@ -51,14 +61,19 @@ const ClassDashboardGV = () => {
                             backgroundColor: '#ffffff', 
                             borderRadius: '8px', 
                             boxShadow: '0 4px 12px rgba(0,0,0,0.15)', 
-                            width: '200px',
+                            width: '220px',
                             overflow: 'hidden',
                             border: '1px solid #eee'
                         }}>
+                            <div style={{ padding: '14px 20px', borderBottom: '1px solid #eee', backgroundColor: '#f8f9fa' }}>
+                                <p style={{ margin: 0, fontWeight: 'bold', color: '#003366', fontSize: '14px' }}>{user?.username ?? '—'}</p>
+                                <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#666' }}>{user?.email ?? '—'}</p>
+                            </div>
+
                             <div 
                                 className="menu-item" 
-                                onClick={() => { setShowMenu(false); /* navigate to profile */ }}
-                                style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.2s',color: '#003366' }}
+                                onClick={() => { setShowMenu(false); navigate('/profile'); }}
+                                style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.2s', color: '#003366' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                             >
@@ -66,7 +81,7 @@ const ClassDashboardGV = () => {
                             </div>
                             <div 
                                 className="menu-item" 
-                                onClick={() => navigate('/')}
+                                onClick={handleLogout}
                                 style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', color: '#dc3545', borderTop: '1px solid #eee', transition: 'background 0.2s' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#fff5f5'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
@@ -93,22 +108,32 @@ const ClassDashboardGV = () => {
 
                 <div className="card-grid" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {[
+                        { title: 'Quản lý deadline và nhiệm vụ', icon: 'fa-tasks', primary: true },
                         { title: 'Tạo milestone', icon: 'fa-flag' },
-                        { title: 'Quản lý đề tài PBL', icon: 'fa-tasks' },
+                        { title: 'Quản lý đề tài PBL', icon: 'fa-project-diagram', path: '/lecturer-management' },
                         { title: 'Đánh giá báo cáo tiến độ', icon: 'fa-clipboard-check' },
-                        { title: 'Đánh giá báo cáo cuối kỳ', icon: 'fa-check-double' },
-                        { title: 'Quản lý điểm', icon: 'fa-sort-numeric-up' },
-                        { title: 'Yêu cầu xuất bản PBL', icon: 'fa-upload' }
+                        { title: 'Đánh giá báo cáo cuối kỳ', icon: 'fa-check-double', path: '/lecturer-management' },
+                        { title: 'Quản lý điểm', icon: 'fa-sort-numeric-up', path: '/lecturer-management' },
+                        { title: 'Yêu cầu xuất bản PBL', icon: 'fa-upload', path: '/lecturer-management' }
                     ].map((item, idx) => (
                         <div 
                             key={idx} 
+                            onClick={() => item.path && navigate(item.path)}
                             className="card clickable" 
-                            style={{ flex: '0 1 300px', textAlign: 'center', padding: '30px 20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', border: '1px solid #eee' }}
+                            style={{ 
+                                flex: '0 1 300px', 
+                                textAlign: 'center', 
+                                padding: '30px 20px', 
+                                background: item.primary ? '#eef2ff' : '#fff', 
+                                borderRadius: '12px', 
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.05)', 
+                                border: item.primary ? '2px solid #0066cc' : '1px solid #eee' 
+                            }}
                         >
                             <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '15px', borderRadius: '8px' }}>
                                 <i className={`fas ${item.icon}`} style={{ fontSize: '24px' }}></i>
                             </div>
-                            <h3 style={{ fontSize: '18px', color: '#333' }}>{item.title}</h3>
+                            <h3 style={{ fontSize: '18px', color: item.primary ? '#0066cc' : '#333', fontWeight: item.primary ? 'bold' : '600' }}>{item.title}</h3>
                         </div>
                     ))}
                 </div>

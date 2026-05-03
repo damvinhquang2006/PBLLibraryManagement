@@ -118,7 +118,7 @@ const DashboardAdmin = () => {
                         <p style={{ color: '#666' }}>Tạo, chỉnh sửa và cấu hình các lớp học PBL</p>
                     </div>
 
-                    <div className="card clickable" onClick={() => navigate('#')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    <div className="card clickable" onClick={() => navigate('/pbl-library')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-archive" style={{ fontSize: '24px' }}></i>
                         </div>
@@ -126,7 +126,7 @@ const DashboardAdmin = () => {
                         <p style={{ color: '#666' }}>Tổ chức và quản lý các tài liệu, đồ án trong thư viện</p>
                     </div>
                     
-                    <div className="card clickable" onClick={() => navigate('#')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    <div className="card clickable" onClick={() => navigate('/account-management')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-users-cog" style={{ fontSize: '24px' }}></i>
                         </div>
@@ -134,7 +134,7 @@ const DashboardAdmin = () => {
                         <p style={{ color: '#666' }}>Quản lý tài khoản người dùng của giảng viên, sinh viên</p>
                     </div>
 
-                    <div className="card clickable" onClick={() => navigate('#')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    <div className="card clickable" onClick={() => navigate('/pbl-approval')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-check-circle" style={{ fontSize: '24px' }}></i>
                         </div>

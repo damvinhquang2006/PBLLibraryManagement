@@ -93,16 +93,16 @@ const ClassDashboardSV = () => {
 
                 <div className="card-grid" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {[
-                        { title: 'Danh sách sinh viên', icon: 'fa-users' },
-                        { title: 'Tạo/ tham gia nhóm', icon: 'fa-user-friends' },
+                        { title: 'Tạo/ tham gia nhóm', icon: 'fa-user-friends', path: '/student-group-space' },
                         { title: 'Đăng ký đề tài PBL', icon: 'fa-edit' },
-                        { title: 'Theo dõi kế hoạch', icon: 'fa-calendar-alt' },
+                        { title: 'Theo dõi kế hoạch', icon: 'fa-calendar-alt', path: '/student-plan-tracking' },
                         { title: 'Nộp báo cáo tiến độ', icon: 'fa-file-upload' },
-                        { title: 'Nộp báo cáo PBL cuối kỳ', icon: 'fa-file-archive' },
-                        { title: 'Xem kết quả đánh giá', icon: 'fa-star' }
+                        { title: 'Nộp báo cáo PBL cuối kỳ', icon: 'fa-file-archive', path: '/student-submission' },
+                        { title: 'Xem kết quả đánh giá', icon: 'fa-star', path: '/student-results' }
                     ].map((item, idx) => (
                         <div 
                             key={idx} 
+                            onClick={() => item.path && navigate(item.path)}
                             className="card clickable" 
                             style={{ flex: '0 1 280px', textAlign: 'center', padding: '30px 20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', border: '1px solid #eee' }}
                         >

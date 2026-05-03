@@ -1,35 +1,59 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/login.css';
+import { loginUser } from '../services/authService';
+import { useAuth } from '../context/AuthContext';
+
+const ROLE_ROUTES = {
+    SV: '/dashboard-sv',
+    GV: '/dashboard-gv',
+    AD: '/dashboard-admin',
+};
 
 const Login = () => {
     const [role, setRole] = useState('SV');
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
+    const navigate = useNavigate();
+    const { login } = useAuth();
+
+    // ── Chọn vai trò ──────────────────────────────────────────────────────────
     const handleRoleSelect = (selectedRole) => {
         setRole(selectedRole);
+        setError('');
     };
 
-    const handleSubmit = (e) => {
+    // ── Placeholder email theo vai trò ────────────────────────────────────────
+    const getEmailPlaceholder = () => {
+        if (role === 'SV') return 'sinhvien@gmail.com';
+        if (role === 'GV') return 'giangvien@gmail.com';
+        return 'admin@gmail.com';
+    };
+
+    // ── Submit form ───────────────────────────────────────────────────────────
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Giả lập đăng nhập thành công
-        if (role === 'SV') {
-            navigate('/dashboard-sv');
-        } else if (role === 'GV') {
-            navigate('/dashboard-gv');
-        } else if (role === 'AD') {
-            navigate('/dashboard-admin');
-        } else {
-            navigate('/');
-        }
-    };
+        setError('');
+        setLoading(true);
 
-    const getPlaceholder = () => {
-        if (role === 'SV') return '102240400';
-        if (role === 'GV') return 'Mã giảng viên';
-        return 'Tài khoản Admin';
+        try {
+            // Gọi authService: truyền email, password, role
+            // Nhận về: { username, avatar, phoneNumber, email, age, gender, role }
+            const userData = await loginUser(email, password, role);
+
+            // Lưu vào AuthContext (và sessionStorage)
+            login(userData);
+
+            // Điều hướng đến dashboard tương ứng
+            navigate(ROLE_ROUTES[userData.role] ?? '/');
+        } catch (err) {
+            setError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -39,6 +63,7 @@ const Login = () => {
                 <h2 className="title-dangnhap text-center">Đăng nhập</h2>
                 <h6 className="text-secondary text-center mb-4">Hệ thống PBL</h6>
 
+                {/* ── Chọn vai trò ── */}
                 <label className="form-label text-secondary">Vai trò</label>
                 <div className="d-flex gap-3 mb-4">
                     <div className={`role-option ${role === 'SV' ? 'active' : ''}`} onClick={() => handleRoleSelect('SV')}>
@@ -55,24 +80,28 @@ const Login = () => {
                     </div>
                 </div>
 
+                {/* ── Form đăng nhập ── */}
                 <form onSubmit={handleSubmit}>
+                    {/* Email */}
                     <div className="mb-3">
-                        <label htmlFor="inputMaUser" className="form-label text-secondary">Tài khoản</label>
+                        <label htmlFor="inputEmail" className="form-label text-secondary">Email</label>
                         <div className="input-group">
-                            <span className="input-group-text"><i className="bi bi-person-badge"></i></span>
+                            <span className="input-group-text"><i className="bi bi-envelope"></i></span>
                             <input
-                                type="text"
+                                type="email"
                                 className="form-control"
-                                id="inputMaUser"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder={getPlaceholder()}
+                                id="inputEmail"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder={getEmailPlaceholder()}
                                 required
+                                disabled={loading}
                             />
                         </div>
                     </div>
 
-                    <div className="mb-5">
+                    {/* Password */}
+                    <div className="mb-4">
                         <label htmlFor="inputPassword" className="form-label text-secondary">Mật khẩu</label>
                         <div className="input-group">
                             <span className="input-group-text"><i className="bi bi-lock"></i></span>
@@ -82,15 +111,38 @@ const Login = () => {
                                 id="inputPassword"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                placeholder="........"
+                                placeholder="••••••••"
                                 required
+                                disabled={loading}
                             />
                         </div>
                     </div>
 
+                    {/* Thông báo lỗi */}
+                    {error && (
+                        <div className="alert alert-danger py-2 mb-3" role="alert">
+                            <i className="bi bi-exclamation-triangle me-2"></i>{error}
+                        </div>
+                    )}
+
+                    {/* Nút đăng nhập */}
                     <div className="d-grid">
-                        <button type="submit" className="btn btn-dangnhap btn-lg">Đăng nhập</button>
+                        <button
+                            type="submit"
+                            className="btn btn-dangnhap btn-lg"
+                            disabled={loading}
+                        >
+                            {loading
+                                ? <><span className="spinner-border spinner-border-sm me-2" role="status"></span>Đang đăng nhập...</>
+                                : 'Đăng nhập'
+                            }
+                        </button>
                     </div>
+
+                    {/* Gợi ý tài khoản demo */}
+                    <p className="text-center text-secondary mt-3" style={{ fontSize: '0.8rem' }}>
+                        Demo — SV: <code>sinhvien@gmail.com</code> / <code>123456</code>
+                    </p>
                 </form>
             </div>
         </div>

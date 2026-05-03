@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Dashboard.css';
 import '../css/DashboardExt.css';
+import { useAuth } from '../context/AuthContext';
 
 const DashboardGV = () => {
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
     const [showMenu, setShowMenu] = useState(false);
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     return (
         <div className="dashboard-body" style={{ position: 'absolute', top: 0, left: 0, width: '100vw', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
@@ -38,8 +45,11 @@ const DashboardGV = () => {
                             userSelect: 'none'
                         }}
                     >
-                        <i className="fas fa-user-tie" style={{ fontSize: '18px' }}></i> 
-                        giangvien@gmail.com
+                        {user?.avatar 
+                            ? <img src={user.avatar} alt="avatar" style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover' }} />
+                            : <i className="fas fa-user-tie" style={{ fontSize: '18px' }}></i>
+                        }
+                        {user?.email ?? 'Giảng viên'}
                         <i className={`fas fa-chevron-${showMenu ? 'up' : 'down'}`} style={{ fontSize: '12px', marginLeft: '5px' }}></i>
                     </div>
 
@@ -51,14 +61,23 @@ const DashboardGV = () => {
                             backgroundColor: '#ffffff', 
                             borderRadius: '8px', 
                             boxShadow: '0 4px 12px rgba(0,0,0,0.15)', 
-                            width: '200px',
+                            width: '220px',
                             overflow: 'hidden',
                             border: '1px solid #eee'
                         }}>
+                            {/* Thông tin Giảng viên */}
+                            <div style={{ padding: '14px 20px', borderBottom: '1px solid #eee', backgroundColor: '#f8f9fa' }}>
+                                <p style={{ margin: 0, fontWeight: 'bold', color: '#003366', fontSize: '14px' }}>{user?.username ?? '—'}</p>
+                                <p style={{ margin: '2px 0 0', fontSize: '12px', color: '#666' }}>{user?.email ?? '—'}</p>
+                                <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#0066cc', fontWeight: 'bold' }}>
+                                    {user?.academic_degree ?? 'Giảng viên'}
+                                </p>
+                            </div>
+
                             <div 
                                 className="menu-item" 
-                                onClick={() => { setShowMenu(false); /* navigate to profile */ }}
-                                style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.2s',color: '#003366' }}
+                                onClick={() => { setShowMenu(false); navigate('/profile'); }}
+                                style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.2s', color: '#003366' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                             >
@@ -66,7 +85,7 @@ const DashboardGV = () => {
                             </div>
                             <div 
                                 className="menu-item" 
-                                onClick={() => navigate('/')}
+                                onClick={handleLogout}
                                 style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', color: '#dc3545', borderTop: '1px solid #eee', transition: 'background 0.2s' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#fff5f5'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
@@ -81,11 +100,12 @@ const DashboardGV = () => {
             <main className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '50px 20px' }}>
                 <div className="welcome-text" style={{ textAlign: 'center', marginBottom: '50px' }}>
                     <h2 style={{ color: '#003366', fontSize: '2.2rem', marginBottom: '10px' }}>Dashboard Giảng viên</h2>
-                    <p style={{ color: '#666', fontSize: '1.1rem' }}>Chào mừng bạn đến với Hệ thống quản lý PBL dành cho Giảng viên</p>
+                    <p style={{ color: '#666', fontSize: '1.1rem' }}>Chào mừng {user?.username}, quản lý công việc và lớp học của bạn tại đây</p>
                 </div>
 
                 <div className="card-grid" style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
                     
+                    {/* Thẻ 1: Lớp PBL của tôi */}
                     <div className="card clickable" onClick={() => navigate('/my-classes-gv')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-chalkboard-teacher" style={{ fontSize: '24px' }}></i>
@@ -94,12 +114,13 @@ const DashboardGV = () => {
                         <p style={{ color: '#666' }}>Xem và quản lý các lớp học PBL mà bạn đang hướng dẫn</p>
                     </div>
 
-                    <div className="card clickable" onClick={() => navigate('#')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    {/* Thẻ 2: Thư viện PBL */}
+                    <div className="card clickable" onClick={() => navigate('/pbl-library')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
-                            <i className="fas fa-tasks" style={{ fontSize: '24px' }}></i>
+                            <i className="fas fa-layer-group" style={{ fontSize: '24px' }}></i>
                         </div>
-                        <h3 style={{ marginBottom: '15px' }}>Quản lý deadline và nhiệm vụ</h3>
-                        <p style={{ color: '#666' }}>Giao việc, theo dõi tiến độ và chấm điểm cho sinh viên</p>
+                        <h3 style={{ marginBottom: '15px' }}>Thư viện PBL</h3>
+                        <p style={{ color: '#666' }}>Quản lý kho tài liệu, mẫu báo cáo và đề tài dự án mẫu</p>
                     </div>
 
                 </div>

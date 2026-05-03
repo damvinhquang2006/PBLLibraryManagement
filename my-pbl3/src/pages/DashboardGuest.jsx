@@ -50,12 +50,20 @@ const DashboardGuest = () => {
                 <div className="card-grid" style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
                     
                     {/* Card Đăng nhập đã được loại bỏ, chỉ giữ lại Thư viện PBL */}
-                    <div className="card clickable" onClick={() => navigate('#')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    <div className="card clickable" onClick={() => navigate('/pbl-library')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-columns" style={{ fontSize: '24px' }}></i>
                         </div>
                         <h3 style={{ marginBottom: '15px' }}>Thư viện PBL</h3>
                         <p style={{ color: '#666' }}>Truy cập tài liệu, mẫu dự án và tài nguyên học tập</p>
+                    </div>
+
+                    <div className="card clickable" onClick={() => navigate('/statistics')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
+                            <i className="fas fa-chart-line" style={{ fontSize: '24px' }}></i>
+                        </div>
+                        <h3 style={{ marginBottom: '15px' }}>Xem thống kê PBL</h3>
+                        <p style={{ color: '#666' }}>Báo cáo số liệu và tình hình học tập đồ án qua các năm</p>
                     </div>
 
                 </div>

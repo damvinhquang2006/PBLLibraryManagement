@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 
 // Import các trang cho routing chính
 import DashboardGuest from './pages/DashboardGuest';
@@ -11,6 +12,16 @@ import MyClassesAdmin from './pages/MyClassesAdmin';
 import MyClassesGV from './pages/MyClassesGV';
 import ClassDashboardGV from './pages/ClassDashboardGV';
 import ClassDashboardSV from './pages/ClassDashboardSV';
+import Profile from './pages/Profile';
+import StudentGroupSpace from './pages/StudentGroupSpace';
+import Statistics from './pages/Statistics';
+import AccountManagement from './pages/AccountManagement';
+import PBLApproval from './pages/PBLApproval';
+import PBLLibrary from './pages/PBLLibrary';
+import StudentSubmission from './pages/StudentSubmission';
+import StudentResults from './pages/StudentResults';
+import LecturerManagement from './pages/LecturerManagement';
+import StudentPlanTracking from './pages/StudentPlanTracking';
 
 // ==========================================
 // DEV UI GALLERY - Chỉ dùng để test giao diện
@@ -106,25 +117,37 @@ function DevUIGallery() {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<DashboardGuest />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard-sv" element={<DashboardSV />} />
-        <Route path="/dashboard-gv" element={<DashboardGV />} />
-        <Route path="/dashboard-admin" element={<DashboardAdmin />} />
-        <Route path="/my-classes-admin" element={<MyClassesAdmin />} />
-        <Route path="/my-classes-gv" element={<MyClassesGV />} />
-        <Route path="/class-dashboard-gv" element={<ClassDashboardGV />} />
-        <Route path="/class-dashboard-sv" element={<ClassDashboardSV />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<DashboardGuest />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard-sv" element={<DashboardSV />} />
+          <Route path="/dashboard-gv" element={<DashboardGV />} />
+          <Route path="/dashboard-admin" element={<DashboardAdmin />} />
+          <Route path="/my-classes-admin" element={<MyClassesAdmin />} />
+          <Route path="/my-classes-gv" element={<MyClassesGV />} />
+          <Route path="/class-dashboard-gv" element={<ClassDashboardGV />} />
+          <Route path="/class-dashboard-sv" element={<ClassDashboardSV />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/student-group-space" element={<StudentGroupSpace />} />
+          <Route path="/statistics" element={<Statistics />} />
+          <Route path="/account-management" element={<AccountManagement />} />
+          <Route path="/pbl-approval" element={<PBLApproval />} />
+          <Route path="/pbl-library" element={<PBLLibrary />} />
+          <Route path="/student-submission" element={<StudentSubmission />} />
+          <Route path="/student-results" element={<StudentResults />} />
+          <Route path="/lecturer-management" element={<LecturerManagement />} />
+          <Route path="/student-plan-tracking" element={<StudentPlanTracking />} />
 
-        {/* 🛠 Route để test UI - truy cập /dev-ui */}
-        <Route path="/dev-ui" element={<DevUIGallery />} />
+          {/* 🛠 Route để test UI - truy cập /dev-ui */}
+          <Route path="/dev-ui" element={<DevUIGallery />} />
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
