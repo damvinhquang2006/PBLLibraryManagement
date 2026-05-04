@@ -5,17 +5,16 @@ import {
     AreaChart, Area, PieChart, Pie, Cell 
 } from 'recharts';
 
-// Dữ liệu thống kê từ năm 2020 (Giả lập dựa trên mô tả của bạn)
+// Dữ liệu thống kê từ năm 2020 (Giả lập)
 const data = [
     { year: '2020', total: 380, quality: 185 },
     { year: '2021', total: 450, quality: 192 },
     { year: '2022', total: 510, quality: 205 },
     { year: '2023', total: 540, quality: 215 },
     { year: '2024', total: 590, quality: 220 },
-    { year: '2025', total: 530, quality: 183 }, // Dữ liệu tính đến hiện tại
+    { year: '2025', total: 530, quality: 183 },
 ];
 
-// Dữ liệu cho biểu đồ tròn (Phân bố theo khoa mẫu)
 const facultyData = [
     { name: 'Công nghệ Thông tin', value: 1200 },
     { name: 'Điện - Điện tử', value: 800 },
@@ -28,46 +27,117 @@ const COLORS = ['#003366', '#0066cc', '#00a3e0', '#66ccff'];
 const Statistics = () => {
     const navigate = useNavigate();
 
-    // Tính toán tổng số đồ án
     const totalProjects = data.reduce((acc, curr) => acc + curr.total, 0);
     const totalQuality = data.reduce((acc, curr) => acc + curr.quality, 0);
 
     return (
-        <div style={{ backgroundColor: '#f4f7fe', minHeight: '100vh', padding: '30px 40px', fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}>
-            
-            {/* Header Section */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                <div>
+        <div style={{ 
+            height: '100vh', 
+            width: '100vw', 
+            backgroundColor: '#f4f7fe', 
+            fontFamily: "'Segoe UI', 'Roboto', sans-serif",
+            margin: 0,
+            padding: 0,
+            overflow: 'auto',
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
+            {/* Header cố định với nút quay lại */}
+            <div style={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 10,
+                backgroundColor: '#f4f7fe',
+                padding: '20px 32px 0 32px',
+                flexShrink: 0
+            }}>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '20px',
+                    marginBottom: '20px'
+                }}>
                     <button 
                         onClick={() => navigate(-1)} 
-                        style={{ border: 'none', background: 'white', padding: '8px 15px', borderRadius: '8px', marginBottom: '15px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#003366', fontWeight: '600', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}
+                        style={{
+                            border: 'none',
+                            background: 'white',
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#003366',
+                            fontWeight: 'bold',
+                            fontSize: '1.2rem',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+                        }}
                     >
-                        <i className="bi bi-arrow-left"></i> Quay lại
+                        ←
                     </button>
-                    <h1 style={{ margin: 0, color: '#003366', fontSize: '1.8rem', fontWeight: '700' }}>Thống kê Đồ án PBL (2020 - 2025)</h1>
-                    <p style={{ margin: '5px 0 0', color: '#64748b' }}>Báo cáo tổng hợp số lượng và chất lượng đồ án tại Thư viện PBL Bách Khoa</p>
+                    <div>
+                        <h1 style={{ margin: 0, color: '#003366', fontSize: '1.8rem', fontWeight: '700' }}>
+                            Thống kê Đồ án PBL (2020 - 2025)
+                        </h1>
+                        <p style={{ margin: '4px 0 0', color: '#64748b' }}>
+                            Báo cáo tổng hợp số lượng và chất lượng đồ án tại Thư viện PBL Bách Khoa
+                        </p>
+                    </div>
                 </div>
-                <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Cập nhật lần cuối</div>
-                    <div style={{ fontWeight: 'bold', color: '#003366' }}>03/05/2026</div>
+                <div style={{ textAlign: 'right', marginTop: '-40px', marginBottom: '10px' }}>
+                    <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Cập nhật: 03/05/2026</div>
                 </div>
             </div>
 
-            {/* Key Metrics Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '25px', marginBottom: '40px' }}>
-                <MetricCard icon="bi-archive" label="Tổng cộng Đồ án" value={totalProjects} color="#003366" subLabel="Đăng tải trên hệ thống" />
-                <MetricCard icon="bi-patch-check" label="Đồ án Chất lượng cao" value={totalQuality} color="#1e8e3e" subLabel="Được kiểm duyệt nghiêm ngặt" />
-                <MetricCard icon="bi-journal-bookmark-fill" label="Lượt tham khảo" value="15,400+" color="#d97706" subLabel="Từ sinh viên các khóa" />
-                <MetricCard icon="bi-people" label="Giảng viên hướng dẫn" value="180+" color="#7c3aed" subLabel="Tham gia hội đồng đánh giá" />
-            </div>
+            {/* Nội dung chính */}
+            <div style={{ padding: '0 32px 40px 32px', flex: 1 }}>
+                {/* Các thẻ số liệu */}
+                <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', 
+                    gap: '24px', 
+                    marginBottom: '40px' 
+                }}>
+                    <MetricCard 
+                        emoji="📚" 
+                        label="Tổng cộng Đồ án" 
+                        value={totalProjects} 
+                        color="#003366" 
+                        subLabel="Đăng tải trên hệ thống" 
+                    />
+                    <MetricCard 
+                        emoji="⭐" 
+                        label="Đồ án Chất lượng cao" 
+                        value={totalQuality} 
+                        color="#1e8e3e" 
+                        subLabel="Được kiểm duyệt nghiêm ngặt" 
+                    />
+                    <MetricCard 
+                        emoji="👀" 
+                        label="Lượt tham khảo" 
+                        value="15,400+" 
+                        color="#d97706" 
+                        subLabel="Từ sinh viên các khóa" 
+                    />
+                    <MetricCard 
+                        emoji="👨‍🏫" 
+                        label="Giảng viên hướng dẫn" 
+                        value="180+" 
+                        color="#7c3aed" 
+                        subLabel="Tham gia hội đồng đánh giá" 
+                    />
+                </div>
 
-            {/* Charts Section */}
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '30px', marginBottom: '30px' }}>
-                
-                {/* Main Bar Chart */}
-                <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.02)', border: '1px solid #eef0f3' }}>
-                    <h3 style={{ margin: '0 0 25px 0', color: '#003366', fontSize: '1.1rem' }}>Sự phát triển số lượng Đồ án theo năm</h3>
-                    <div style={{ height: '350px' }}>
+                {/* Biểu đồ cột + tròn */}
+                <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', 
+                    gap: '30px', 
+                    marginBottom: '30px' 
+                }}>
+                    <ChartCard title="Sự phát triển số lượng Đồ án theo năm">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={data}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -82,38 +152,33 @@ const Statistics = () => {
                                 <Bar dataKey="quality" name="Chất lượng cao" fill="#00a3e0" radius={[4, 4, 0, 0]} barSize={40} />
                             </BarChart>
                         </ResponsiveContainer>
-                    </div>
-                </div>
+                    </ChartCard>
 
-                {/* Pie Chart */}
-                <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.02)', border: '1px solid #eef0f3' }}>
-                    <h3 style={{ margin: '0 0 25px 0', color: '#003366', fontSize: '1.1rem' }}>Tỉ lệ theo Chuyên ngành</h3>
-                    <div style={{ height: '350px' }}>
+                    <ChartCard title="Tỉ lệ theo Chuyên ngành">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
                                     data={facultyData}
                                     innerRadius={60}
-                                    outerRadius={80}
+                                    outerRadius={90}
                                     paddingAngle={5}
                                     dataKey="value"
+                                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                    labelLine={false}
                                 >
                                     {facultyData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
                                 <Tooltip />
-                                <Legend verticalAlign="bottom" layout="vertical" align="right" wrapperStyle={{ fontSize: '12px' }} />
+                                <Legend verticalAlign="bottom" layout="horizontal" align="center" wrapperStyle={{ fontSize: '12px', paddingTop: '20px' }} />
                             </PieChart>
                         </ResponsiveContainer>
-                    </div>
+                    </ChartCard>
                 </div>
-            </div>
 
-            {/* Growth Area Chart */}
-            <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.02)', border: '1px solid #eef0f3' }}>
-                <h3 style={{ margin: '0 0 25px 0', color: '#003366', fontSize: '1.1rem' }}>Xu hướng Đồ án Chất lượng tốt được lưu trữ</h3>
-                <div style={{ height: '300px' }}>
+                {/* Biểu đồ vùng */}
+                <ChartCard title="Xu hướng Đồ án Chất lượng tốt được lưu trữ">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={data}>
                             <defs>
@@ -129,26 +194,62 @@ const Statistics = () => {
                             <Area type="monotone" dataKey="quality" name="Số lượng lưu trữ" stroke="#0066cc" strokeWidth={3} fillOpacity={1} fill="url(#colorQuality)" />
                         </AreaChart>
                     </ResponsiveContainer>
-                </div>
-                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#eef2ff', borderRadius: '10px', color: '#003366', fontSize: '0.9rem' }}>
-                    <i className="bi bi-info-circle-fill" style={{ marginRight: '10px' }}></i>
-                    Mỗi năm hệ thống tiếp nhận khoảng <strong>200 đồ án xuất sắc</strong> được hội đồng chấm điểm trên 9.0 để đưa vào Thư viện tham khảo dành cho sinh viên khóa sau.
-                </div>
+                    <div style={{ marginTop: '20px', padding: '12px 16px', backgroundColor: '#eef2ff', borderRadius: '12px', color: '#003366', fontSize: '0.85rem' }}>
+                        ℹ️ Mỗi năm hệ thống tiếp nhận khoảng <strong>200 đồ án xuất sắc</strong> được hội đồng chấm điểm trên 9.0 để đưa vào Thư viện tham khảo dành cho sinh viên khóa sau.
+                    </div>
+                </ChartCard>
             </div>
         </div>
     );
 };
 
-// Sub-component for metric cards
-const MetricCard = ({ icon, label, value, color, subLabel }) => (
-    <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '16px', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', border: '1px solid #eef0f3', display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <div style={{ width: '50px', height: '50px', borderRadius: '12px', backgroundColor: `${color}10`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: color, fontSize: '1.5rem' }}>
-            <i className={`bi ${icon}`}></i>
+// Component thẻ số liệu (dùng emoji thay vì icon Bootstrap)
+const MetricCard = ({ emoji, label, value, color, subLabel }) => (
+    <div style={{ 
+        backgroundColor: 'white', 
+        padding: '20px', 
+        borderRadius: '20px', 
+        boxShadow: '0 4px 12px rgba(0,0,0,0.02)', 
+        border: '1px solid #eef0f3', 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: '16px',
+        transition: 'transform 0.2s'
+    }}>
+        <div style={{ 
+            width: '56px', 
+            height: '56px', 
+            borderRadius: '16px', 
+            backgroundColor: `${color}10`, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            fontSize: '1.8rem'
+        }}>
+            {emoji}
         </div>
         <div>
-            <div style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: '500' }}>{label}</div>
-            <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: '#333', margin: '2px 0' }}>{value}</div>
-            <div style={{ fontSize: '0.75rem', color: '#888' }}>{subLabel}</div>
+            <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '500' }}>{label}</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#1e293b', lineHeight: 1.2 }}>{value}</div>
+            <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>{subLabel}</div>
+        </div>
+    </div>
+);
+
+// Component khung biểu đồ
+const ChartCard = ({ title, children }) => (
+    <div style={{ 
+        backgroundColor: 'white', 
+        padding: '20px', 
+        borderRadius: '20px', 
+        boxShadow: '0 10px 25px rgba(0,0,0,0.02)', 
+        border: '1px solid #eef0f3',
+        display: 'flex',
+        flexDirection: 'column'
+    }}>
+        <h3 style={{ margin: '0 0 20px 0', color: '#003366', fontSize: '1.1rem', fontWeight: '600' }}>{title}</h3>
+        <div style={{ height: '320px', width: '100%' }}>
+            {children}
         </div>
     </div>
 );

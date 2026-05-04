@@ -1,28 +1,19 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { useAuth } from '../context/AuthContext'; // Giả sử bạn có context
 
 const AccountManagement = () => {
     const navigate = useNavigate();
-    // const { user: currentUser } = useAuth(); // Có thể dùng để kiểm tra quyền
 
-    // Tab hiện tại: 'SV' | 'GV' | 'AD'
     const [activeTab, setActiveTab] = useState('SV');
     const [searchTerm, setSearchTerm] = useState('');
-
-    // State cho các bộ lọc
-    const [facultyFilter, setFacultyFilter] = useState('');   // lọc theo khoa (SV+GV)
-    const [classFilter, setClassFilter] = useState('');       // lọc theo lớp (chỉ SV)
-
-    // State điều khiển hiển thị hộp thoại mini
-    const [showFilterDialog, setShowFilterDialog] = useState(null); // 'CLASS' | 'FACULTY' | null
+    const [facultyFilter, setFacultyFilter] = useState('');
+    const [classFilter, setClassFilter] = useState('');
+    const [showFilterDialog, setShowFilterDialog] = useState(null);
     const [filterSearch, setFilterSearch] = useState('');
 
-    // Dữ liệu giả lập cho các lựa chọn
     const faculties = ['Công nghệ Thông tin', 'Điện - Điện tử', 'Cơ khí', 'Xây dựng', 'Kinh tế'];
     const classes = ['22T_DT1', '22T_DT2', '21T_DT1', '20T_DT3', '23T_DT1', '22T_CK1'];
 
-    // Dữ liệu người dùng (đã mở rộng)
     const [users, setUsers] = useState([
         { id: 1, username: 'Nguyễn Như Quỳnh', email: 'quynh.nguyen@sv.edu.vn', role: 'SV', class_name: '22T_DT1', faculty: 'Công nghệ Thông tin' },
         { id: 2, username: 'Trần Văn Minh', email: 'minh.tran@gv.edu.vn', role: 'GV', class_name: '', faculty: 'Công nghệ Thông tin' },
@@ -32,11 +23,8 @@ const AccountManagement = () => {
         { id: 6, username: 'Đặng Hữu Phúc', email: 'phuc.dang@sv.edu.vn', role: 'SV', class_name: '22T_DT2', faculty: 'Công nghệ Thông tin' },
     ]);
 
-    // --- Hàm lọc dữ liệu dựa trên tab, tìm kiếm, bộ lọc khoa/lớp ---
     const filteredUsers = useMemo(() => {
         let result = users.filter(u => u.role === activeTab);
-
-        // Lọc theo từ khóa tìm kiếm (tên hoặc email)
         if (searchTerm.trim() !== '') {
             const keyword = searchTerm.toLowerCase();
             result = result.filter(u => 
@@ -44,21 +32,15 @@ const AccountManagement = () => {
                 u.email.toLowerCase().includes(keyword)
             );
         }
-
-        // Lọc theo khoa (áp dụng cho SV và GV)
         if ((activeTab === 'SV' || activeTab === 'GV') && facultyFilter) {
             result = result.filter(u => u.faculty === facultyFilter);
         }
-
-        // Lọc theo lớp (chỉ SV)
         if (activeTab === 'SV' && classFilter) {
             result = result.filter(u => u.class_name === classFilter);
         }
-
         return result;
     }, [users, activeTab, searchTerm, facultyFilter, classFilter]);
 
-    // --- Xử lý CRUD ---
     const handleAdd = () => {
         if (activeTab === 'AD') {
             alert('Không thể thêm tài khoản Admin. Bạn chỉ có quyền đọc.');
@@ -122,11 +104,9 @@ const AccountManagement = () => {
         alert(`Thông tin tài khoản Admin:\nHọ tên: ${user.username}\nEmail: ${user.email}\nĐơn vị: ${user.faculty}`);
     };
 
-    // Xóa bộ lọc
     const clearFacultyFilter = () => setFacultyFilter('');
     const clearClassFilter = () => setClassFilter('');
 
-    // Đóng hộp thoại mini và áp dụng lựa chọn
     const selectFilterItem = (type, value) => {
         if (type === 'FACULTY') {
             setFacultyFilter(value);
@@ -138,9 +118,27 @@ const AccountManagement = () => {
     };
 
     return (
-        <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f4f7fe', fontFamily: "'Segoe UI', Tahoma, sans-serif" }}>
-            {/* Sidebar trái: bộ lọc */}
-            <div style={{ width: '280px', backgroundColor: '#fff', borderRight: '1px solid #eef0f3', display: 'flex', flexDirection: 'column', padding: '25px', boxShadow: '4px 0 10px rgba(0,0,0,0.02)' }}>
+        <div style={{ 
+            display: 'flex', 
+            height: '100vh', 
+            width: '100vw',
+            backgroundColor: '#f4f7fe', 
+            fontFamily: "'Segoe UI', 'Roboto', sans-serif",
+            margin: 0,
+            padding: 0,
+            overflow: 'hidden'
+        }}>
+            {/* Sidebar trái */}
+            <div style={{ 
+                width: '280px', 
+                backgroundColor: '#fff', 
+                borderRight: '1px solid #eef0f3', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                padding: '25px', 
+                overflowY: 'auto',
+                flexShrink: 0
+            }}>
                 <button 
                     onClick={() => navigate(-1)} 
                     style={{ border: 'none', background: 'none', color: '#003366', fontWeight: 'bold', cursor: 'pointer', marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '8px' }}
@@ -150,7 +148,6 @@ const AccountManagement = () => {
 
                 <h3 style={{ fontSize: '1rem', color: '#003366', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Bộ lọc tìm kiếm</h3>
                 
-                {/* Bộ lọc Khoa (cho SV và GV) */}
                 {(activeTab === 'SV' || activeTab === 'GV') && (
                     <div style={{ marginBottom: '15px', position: 'relative' }}>
                         <button 
@@ -178,7 +175,6 @@ const AccountManagement = () => {
                     </div>
                 )}
 
-                {/* Bộ lọc Lớp (chỉ SV) */}
                 {activeTab === 'SV' && (
                     <div style={{ position: 'relative' }}>
                         <button 
@@ -208,20 +204,24 @@ const AccountManagement = () => {
             </div>
 
             {/* Vùng nội dung chính */}
-            <div style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
+            <div style={{ 
+                flex: 1, 
+                padding: '40px', 
+                overflowY: 'auto',
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
                 <h1 style={{ color: '#003366', fontSize: '1.8rem', marginBottom: '30px', fontWeight: '700' }}>Quản lý Tài khoản</h1>
 
-                {/* 3 nút chức năng chính */}
                 <div style={{ display: 'flex', gap: '20px', marginBottom: '40px' }}>
-                    <TabButton active={activeTab === 'SV'} onClick={() => { setActiveTab('SV'); setFacultyFilter(''); setClassFilter(''); }} icon="bi-people" label="Tài khoản Sinh viên" />
-                    <TabButton active={activeTab === 'GV'} onClick={() => { setActiveTab('GV'); setFacultyFilter(''); setClassFilter(''); }} icon="bi-person-badge" label="Tài khoản Giảng viên" />
-                    <TabButton active={activeTab === 'AD'} onClick={() => { setActiveTab('AD'); setFacultyFilter(''); setClassFilter(''); }} icon="bi-shield-lock" label="Tài khoản Admin" />
+                    <TabButton active={activeTab === 'SV'} onClick={() => { setActiveTab('SV'); setFacultyFilter(''); setClassFilter(''); }} label="Tài khoản Sinh viên" />
+                    <TabButton active={activeTab === 'GV'} onClick={() => { setActiveTab('GV'); setFacultyFilter(''); setClassFilter(''); }} label="Tài khoản Giảng viên" />
+                    <TabButton active={activeTab === 'AD'} onClick={() => { setActiveTab('AD'); setFacultyFilter(''); setClassFilter(''); }} label="Tài khoản Admin" />
                 </div>
 
-                {/* Bảng danh sách + thanh tìm kiếm */}
-                <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '25px', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', border: '1px solid #eef0f3' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
-                        <div style={{ position: 'relative', width: '400px' }}>
+                <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '25px', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', border: '1px solid #eef0f3', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px', flexWrap: 'wrap', gap: '15px' }}>
+                        <div style={{ position: 'relative', width: '400px', maxWidth: '100%' }}>
                             <span style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#888' }}>🔍</span>
                             <input 
                                 type="text" 
@@ -238,57 +238,58 @@ const AccountManagement = () => {
                         )}
                     </div>
 
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <thead>
-                            <tr style={{ borderBottom: '2px solid #f4f7fe', textAlign: 'left' }}>
-                                <th style={{ padding: '15px', color: '#64748b', fontSize: '0.9rem' }}>Người dùng</th>
-                                <th style={{ padding: '15px', color: '#64748b', fontSize: '0.9rem' }}>Email</th>
-                                <th style={{ padding: '15px', color: '#64748b', fontSize: '0.9rem' }}>Khoa / Đơn vị</th>
-                                <th style={{ padding: '15px', color: '#64748b', fontSize: '0.9rem' }}>Thao tác</th>
-                             </tr>
-                        </thead>
-                        <tbody>
-                            {filteredUsers.map(u => (
-                                <tr key={u.id} style={{ borderBottom: '1px solid #f4f7fe' }}>
-                                    <td style={{ padding: '15px' }}>
-                                        <div style={{ fontWeight: 'bold', color: '#333' }}>{u.username}</div>
-                                        {activeTab === 'SV' && u.class_name && (
-                                            <div style={{ fontSize: '0.8rem', color: '#888' }}>Lớp: {u.class_name}</div>
-                                        )}
-                                    </td>
-                                    <td style={{ padding: '15px', color: '#555' }}>{u.email}</td>
-                                    <td style={{ padding: '15px', color: '#555' }}>{u.faculty}</td>
-                                    <td style={{ padding: '15px' }}>
-                                        {activeTab === 'AD' ? (
-                                            <button onClick={() => handleViewOnly(u)} style={{ border: 'none', background: '#eef2ff', color: '#003366', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>
-                                                👁️ Xem thông tin
-                                            </button>
-                                        ) : (
-                                            <div style={{ display: 'flex', gap: '10px' }}>
-                                                <button onClick={() => handleEdit(u)} style={{ border: 'none', background: '#f0f9ff', color: '#0066cc', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>✏️</button>
-                                                <button onClick={() => handleDelete(u)} style={{ border: 'none', background: '#fff1f2', color: '#e11d48', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>🗑️</button>
-                                            </div>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
-                            {filteredUsers.length === 0 && (
-                                <tr>
-                                    <td colSpan="4" style={{ textAlign: 'center', padding: '40px', color: '#888' }}>
-                                        Không có dữ liệu phù hợp.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <div style={{ overflowX: 'auto', flex: 1 }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '2px solid #f4f7fe', textAlign: 'left' }}>
+                                    <th style={{ padding: '15px', color: '#64748b', fontSize: '0.9rem' }}>Người dùng</th>
+                                    <th style={{ padding: '15px', color: '#64748b', fontSize: '0.9rem' }}>Email</th>
+                                    <th style={{ padding: '15px', color: '#64748b', fontSize: '0.9rem' }}>Khoa / Đơn vị</th>
+                                    <th style={{ padding: '15px', color: '#64748b', fontSize: '0.9rem' }}>Thao tác</th>
+                                 </tr>
+                            </thead>
+                            <tbody>
+                                {filteredUsers.map(u => (
+                                    <tr key={u.id} style={{ borderBottom: '1px solid #f4f7fe' }}>
+                                        <td style={{ padding: '15px' }}>
+                                            <div style={{ fontWeight: 'bold', color: '#333' }}>{u.username}</div>
+                                            {activeTab === 'SV' && u.class_name && (
+                                                <div style={{ fontSize: '0.8rem', color: '#888' }}>Lớp: {u.class_name}</div>
+                                            )}
+                                        </td>
+                                        <td style={{ padding: '15px', color: '#555' }}>{u.email}</td>
+                                        <td style={{ padding: '15px', color: '#555' }}>{u.faculty}</td>
+                                        <td style={{ padding: '15px' }}>
+                                            {activeTab === 'AD' ? (
+                                                <button onClick={() => handleViewOnly(u)} style={{ border: 'none', background: '#eef2ff', color: '#003366', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}>
+                                                    👁️ Xem thông tin
+                                                </button>
+                                            ) : (
+                                                <div style={{ display: 'flex', gap: '10px' }}>
+                                                    <button onClick={() => handleEdit(u)} style={{ border: 'none', background: '#f0f9ff', color: '#0066cc', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>✏️</button>
+                                                    <button onClick={() => handleDelete(u)} style={{ border: 'none', background: '#fff1f2', color: '#e11d48', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>🗑️</button>
+                                                </div>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                                {filteredUsers.length === 0 && (
+                                    <tr>
+                                        <td colSpan="4" style={{ textAlign: 'center', padding: '40px', color: '#888' }}>
+                                            Không có dữ liệu phù hợp.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-// Component nút tab
-const TabButton = ({ active, onClick, icon, label }) => (
+const TabButton = ({ active, onClick, label }) => (
     <button 
         onClick={onClick}
         style={{ 
@@ -299,7 +300,7 @@ const TabButton = ({ active, onClick, icon, label }) => (
         }}
     >
         <div style={{ width: '45px', height: '45px', borderRadius: '12px', backgroundColor: active ? '#003366' : '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center', color: active ? '#fff' : '#003366', fontSize: '1.2rem' }}>
-            <i className={`bi ${icon}`}></i> {/* Bạn cần import Bootstrap Icons hoặc thay bằng text */}
+            {label.includes('Sinh viên') ? '👥' : label.includes('Giảng viên') ? '👩‍🏫' : '🛡️'}
         </div>
         <div style={{ textAlign: 'left' }}>
             <div style={{ fontSize: '0.8rem', color: active ? '#003366' : '#888', fontWeight: '500' }}>Quản lý</div>
@@ -308,7 +309,6 @@ const TabButton = ({ active, onClick, icon, label }) => (
     </button>
 );
 
-// Component hộp thoại lọc mini (có thanh tìm kiếm và danh sách)
 const MiniFilterDialog = ({ title, items, search, setSearch, onSelect }) => {
     const filteredItems = items.filter(item => item.toLowerCase().includes(search.toLowerCase()));
     return (

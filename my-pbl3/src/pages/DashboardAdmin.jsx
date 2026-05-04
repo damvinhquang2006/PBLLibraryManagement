@@ -142,7 +142,7 @@ const DashboardAdmin = () => {
                         <p style={{ color: '#666' }}>Xem xét và phê duyệt các đồ án xuất sắc lên thư viện</p>
                     </div>
                     
-                    <div className="card clickable" onClick={() => navigate('#')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    <div className="card clickable" onClick={() => navigate('/statistics')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-chart-bar" style={{ fontSize: '24px' }}></i>
                         </div>

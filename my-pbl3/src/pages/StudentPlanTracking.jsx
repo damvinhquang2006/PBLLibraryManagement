@@ -163,7 +163,7 @@ const StudentPlanTracking = () => {
                                             <span style={{ fontSize: '0.7rem', fontWeight: 'bold', padding: '4px 10px', borderRadius: '20px', backgroundColor: '#f1f5f9', color: '#64748b' }}>
                                                 {item.milestone}
                                             </span>
-                                            {isUrgent && <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: '#ef4444' }}>⚠️ KHẨN CẤP</span>}
+                                            
                                         </div>
                                         <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#334155' }}>{item.task}</h3>
                                         <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
