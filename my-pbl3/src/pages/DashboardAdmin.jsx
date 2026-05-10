@@ -118,7 +118,7 @@ const DashboardAdmin = () => {
                         <p style={{ color: '#666' }}>Tạo, chỉnh sửa và cấu hình các lớp học PBL</p>
                     </div>
 
-                    <div className="card clickable" onClick={() => navigate('/pbl-library')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    <div className="card clickable" onClick={() => navigate('/thu-vien-pbl')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-archive" style={{ fontSize: '24px' }}></i>
                         </div>
@@ -152,23 +152,7 @@ const DashboardAdmin = () => {
 
                 </div>
 
-                <div className="stats-card" style={{ marginTop: '50px', background: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', border: '1px solid #eee' }}>
-                    <h3 style={{ color: '#003366', marginBottom: '30px', textAlign: 'center' }}>Thống kê hệ thống</h3>
-                    <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
-                        <div className="stat-item" style={{ textAlign: 'center', padding: '20px', borderRight: '1px solid #eee' }}>
-                            <StatNumber target={1500} />
-                            <p style={{ color: '#666', marginTop: '10px' }}>Sinh viên hoạt động</p>
-                        </div>
-                        <div className="stat-item" style={{ textAlign: 'center', padding: '20px', borderRight: '1px solid #eee' }}>
-                            <StatNumber target={120} />
-                            <p style={{ color: '#666', marginTop: '10px' }}>Giảng viên</p>
-                        </div>
-                        <div className="stat-item" style={{ textAlign: 'center', padding: '20px' }}>
-                            <StatNumber target={450} />
-                            <p style={{ color: '#666', marginTop: '10px' }}>Dự án trong thư viện</p>
-                        </div>
-                    </div>
-                </div>
+
             </main>
         </div>
     );

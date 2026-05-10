@@ -16,10 +16,10 @@ const data = [
 ];
 
 const facultyData = [
-    { name: 'Công nghệ Thông tin', value: 1200 },
-    { name: 'Điện - Điện tử', value: 800 },
-    { name: 'Cơ khí', value: 600 },
-    { name: 'Xây dựng', value: 400 },
+    { name: 'Công nghệ Thông tin', value: 1186 },
+    { name: 'Điện - Điện tử', value: 119},
+    { name: 'Cơ khí', value: 736 },
+    { name: 'Xây dựng', value: 485 },
 ];
 
 const COLORS = ['#003366', '#0066cc', '#00a3e0', '#66ccff'];

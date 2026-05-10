@@ -110,11 +110,11 @@ const ClassDashboardGV = () => {
                     {[
                         { title: 'Quản lý deadline và nhiệm vụ', icon: 'fa-tasks', primary: true },
                         { title: 'Tạo milestone', icon: 'fa-flag' },
-                        { title: 'Quản lý đề tài PBL', icon: 'fa-project-diagram', path: '/lecturer-management' },
+                        { title: 'Quản lý đề tài PBL', icon: 'fa-project-diagram', path: '/lecturer-topics' },
                         { title: 'Đánh giá báo cáo tiến độ', icon: 'fa-clipboard-check' },
-                        { title: 'Đánh giá báo cáo cuối kỳ', icon: 'fa-check-double', path: '/lecturer-management' },
-                        { title: 'Quản lý điểm', icon: 'fa-sort-numeric-up', path: '/lecturer-management' },
-                        { title: 'Yêu cầu xuất bản PBL', icon: 'fa-upload', path: '/lecturer-management' }
+                        { title: 'Đánh giá báo cáo cuối kỳ', icon: 'fa-check-double', path: '/lecturer-grading' },
+                        { title: 'Quản lý điểm', icon: 'fa-sort-numeric-up', path: '/lecturer-grading' },
+                        { title: 'Yêu cầu xuất bản PBL', icon: 'fa-upload', path: '/lecturer-grading' }
                     ].map((item, idx) => (
                         <div 
                             key={idx} 

@@ -11,17 +11,22 @@ import DashboardAdmin from './pages/DashboardAdmin';
 import MyClassesAdmin from './pages/MyClassesAdmin';
 import MyClassesGV from './pages/MyClassesGV';
 import ClassDashboardGV from './pages/ClassDashboardGV';
-import ClassDashboardSV from './pages/ClassDashboardSV';
+
 import Profile from './pages/Profile';
 import StudentGroupSpace from './pages/StudentGroupSpace';
 import Statistics from './pages/Statistics';
 import AccountManagement from './pages/AccountManagement';
 import PBLApproval from './pages/PBLApproval';
-import PBLLibrary from './pages/PBLLibrary';
+
 import StudentSubmission from './pages/StudentSubmission';
 import StudentResults from './pages/StudentResults';
-import LecturerManagement from './pages/LecturerManagement';
+import LecturerTopicManagement from './pages/LecturerTopicManagement';
+import LecturerGrading from './pages/LecturerGrading';
 import StudentPlanTracking from './pages/StudentPlanTracking';
+import SV_TruyCapLopPBL from './pages/SV_TruyCapLopPBL';
+import SV_WorkShop from './pages/SV_WorkShop';
+import ThuVienPBL from './pages/ThuVienPBL';
+import ThuVienPBL_Xem from './pages/ThuVienPBL_Xem';
 
 // ==========================================
 // DEV UI GALLERY - Chỉ dùng để test giao diện
@@ -128,17 +133,22 @@ function App() {
           <Route path="/my-classes-admin" element={<MyClassesAdmin />} />
           <Route path="/my-classes-gv" element={<MyClassesGV />} />
           <Route path="/class-dashboard-gv" element={<ClassDashboardGV />} />
-          <Route path="/class-dashboard-sv" element={<ClassDashboardSV />} />
+
           <Route path="/profile" element={<Profile />} />
           <Route path="/student-group-space" element={<StudentGroupSpace />} />
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/account-management" element={<AccountManagement />} />
           <Route path="/pbl-approval" element={<PBLApproval />} />
-          <Route path="/pbl-library" element={<PBLLibrary />} />
+
           <Route path="/student-submission" element={<StudentSubmission />} />
           <Route path="/student-results" element={<StudentResults />} />
-          <Route path="/lecturer-management" element={<LecturerManagement />} />
+          <Route path="/lecturer-topics" element={<LecturerTopicManagement />} />
+          <Route path="/lecturer-grading" element={<LecturerGrading />} />
           <Route path="/student-plan-tracking" element={<StudentPlanTracking />} />
+          <Route path="/sv-truy-cap-lop" element={<SV_TruyCapLopPBL />} />
+          <Route path="/sv-workshop" element={<SV_WorkShop />} />
+          <Route path="/thu-vien-pbl" element={<ThuVienPBL />} />
+          <Route path="/thu-vien-pbl-xem" element={<ThuVienPBL_Xem />} />
 
           {/* 🛠 Route để test UI - truy cập /dev-ui */}
           <Route path="/dev-ui" element={<DevUIGallery />} />

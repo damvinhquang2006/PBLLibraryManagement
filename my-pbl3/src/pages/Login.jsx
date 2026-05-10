@@ -4,14 +4,14 @@ import '../css/login.css';
 import { loginUser } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 
-const ROLE_ROUTES = {
-    SV: '/dashboard-sv',
-    GV: '/dashboard-gv',
-    AD: '/dashboard-admin',
+// Ánh xạ vai trò từ Backend sang Route của Frontend
+const ROLE_CONFIG = {
+    'STUDENT': { role: 'SV', route: '/dashboard-sv', label: 'Sinh viên' },
+    'LECTURER': { role: 'GV', route: '/dashboard-gv', label: 'Giảng viên' },
+    'ADMIN': { role: 'AD', route: '/dashboard-admin', label: 'Admin' },
 };
 
 const Login = () => {
-    const [role, setRole] = useState('SV');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -20,19 +20,6 @@ const Login = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    // ── Chọn vai trò ──────────────────────────────────────────────────────────
-    const handleRoleSelect = (selectedRole) => {
-        setRole(selectedRole);
-        setError('');
-    };
-
-    // ── Placeholder email theo vai trò ────────────────────────────────────────
-    const getEmailPlaceholder = () => {
-        if (role === 'SV') return 'sinhvien@gmail.com';
-        if (role === 'GV') return 'giangvien@gmail.com';
-        return 'admin@gmail.com';
-    };
-
     // ── Submit form ───────────────────────────────────────────────────────────
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,15 +27,31 @@ const Login = () => {
         setLoading(true);
 
         try {
-            // Gọi authService: truyền email, password, role
-            // Nhận về: { username, avatar, phoneNumber, email, age, gender, role }
-            const userData = await loginUser(email, password, role);
+            // 1. Gọi API: chỉ truyền email và password theo thiết kế mới
+            const backendResponse = await loginUser(email, password);
 
-            // Lưu vào AuthContext (và sessionStorage)
+            // 2. Phân tích Role từ Backend (ví dụ: 'LECTURER', 'ADMIN', 'STUDENT')
+            const config = ROLE_CONFIG[backendResponse.role];
+
+            if (!config) {
+                throw new Error('Vai trò người dùng không hợp lệ từ hệ thống.');
+            }
+
+            // 3. Chuẩn bị dữ liệu cho AuthContext (kèm các trường mockup để giao diện không bị trống)
+            const userData = {
+                id: backendResponse.Id,
+                email: backendResponse.email,
+                role: config.role, // Chuyển sang 'SV', 'GV', hoặc 'AD'
+                username: backendResponse.email.split('@')[0], // Tạm lấy email làm tên
+                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${backendResponse.Id}`,
+                message: backendResponse.message
+            };
+
+            // 4. Lưu vào AuthContext
             login(userData);
 
-            // Điều hướng đến dashboard tương ứng
-            navigate(ROLE_ROUTES[userData.role] ?? '/');
+            // 5. Điều hướng
+            navigate(config.route);
         } catch (err) {
             setError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
         } finally {
@@ -61,24 +64,7 @@ const Login = () => {
             <div className="login-card">
                 <div className="logo-box"><i className="bi bi-lock"></i></div>
                 <h2 className="title-dangnhap text-center">Đăng nhập</h2>
-                <h6 className="text-secondary text-center mb-4">Hệ thống PBL</h6>
-
-                {/* ── Chọn vai trò ── */}
-                <label className="form-label text-secondary">Vai trò</label>
-                <div className="d-flex gap-3 mb-4">
-                    <div className={`role-option ${role === 'SV' ? 'active' : ''}`} onClick={() => handleRoleSelect('SV')}>
-                        <i className="bi bi-mortarboard role-icon"></i>
-                        <div>Sinh viên</div>
-                    </div>
-                    <div className={`role-option ${role === 'GV' ? 'active' : ''}`} onClick={() => handleRoleSelect('GV')}>
-                        <i className="bi bi-people role-icon"></i>
-                        <div>Giảng viên</div>
-                    </div>
-                    <div className={`role-option ${role === 'AD' ? 'active' : ''}`} onClick={() => handleRoleSelect('AD')}>
-                        <i className="bi bi-person-gear role-icon"></i>
-                        <div>Admin</div>
-                    </div>
-                </div>
+                <h6 className="text-secondary text-center mb-4">Hệ thống PBL - Kết nối API</h6>
 
                 {/* ── Form đăng nhập ── */}
                 <form onSubmit={handleSubmit}>
@@ -93,7 +79,7 @@ const Login = () => {
                                 id="inputEmail"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                placeholder={getEmailPlaceholder()}
+                                placeholder="admin6@pbl.com"
                                 required
                                 disabled={loading}
                             />
@@ -133,16 +119,17 @@ const Login = () => {
                             disabled={loading}
                         >
                             {loading
-                                ? <><span className="spinner-border spinner-border-sm me-2" role="status"></span>Đang đăng nhập...</>
-                                : 'Đăng nhập'
+                                ? <><span className="spinner-border spinner-border-sm me-2" role="status"></span>Đang xác thực...</>
+                                : 'Đăng nhập hệ thống'
                             }
                         </button>
                     </div>
 
-                    {/* Gợi ý tài khoản demo */}
-                    <p className="text-center text-secondary mt-3" style={{ fontSize: '0.8rem' }}>
-                        Demo — SV: <code>sinhvien@gmail.com</code> / <code>123456</code>
-                    </p>
+                    <div className="mt-4 p-3 bg-light rounded" style={{ fontSize: '0.85rem' }}>
+                        <strong>Ghi chú API:</strong><br/>
+                        - Request: <code>{"{ email, password }"}</code><br/>
+                        - Role hỗ trợ: <code>ADMIN, LECTURER, STUDENT</code>
+                    </div>
                 </form>
             </div>
         </div>

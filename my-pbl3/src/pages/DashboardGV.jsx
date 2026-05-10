@@ -115,7 +115,7 @@ const DashboardGV = () => {
                     </div>
 
                     {/* Thẻ 2: Thư viện PBL */}
-                    <div className="card clickable" onClick={() => navigate('/pbl-library')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    <div className="card clickable" onClick={() => navigate('/thu-vien-pbl')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-layer-group" style={{ fontSize: '24px' }}></i>
                         </div>
@@ -125,23 +125,7 @@ const DashboardGV = () => {
 
                 </div>
 
-                <div className="stats-card" style={{ marginTop: '50px', background: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', border: '1px solid #eee' }}>
-                    <h3 style={{ color: '#003366', marginBottom: '30px', textAlign: 'center' }}>Thống kê tổng quan</h3>
-                    <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
-                        <div className="stat-item" style={{ textAlign: 'center', padding: '20px', borderRight: '1px solid #eee' }}>
-                            <span className="stat-number" style={{ display: 'block', fontSize: '2.5rem', fontWeight: 'bold', color: '#003366' }}>4</span>
-                            <p style={{ color: '#666', marginTop: '10px' }}>Lớp đang phụ trách</p>
-                        </div>
-                        <div className="stat-item" style={{ textAlign: 'center', padding: '20px', borderRight: '1px solid #eee' }}>
-                            <span className="stat-number" style={{ display: 'block', fontSize: '2.5rem', fontWeight: 'bold', color: '#003366' }}>15</span>
-                            <p style={{ color: '#666', marginTop: '10px' }}>Nhiệm vụ cần duyệt</p>
-                        </div>
-                        <div className="stat-item" style={{ textAlign: 'center', padding: '20px' }}>
-                            <span className="stat-number" style={{ display: 'block', fontSize: '2.5rem', fontWeight: 'bold', color: '#003366' }}>20</span>
-                            <p style={{ color: '#666', marginTop: '10px' }}>Đồ án đã hướng dẫn</p>
-                        </div>
-                    </div>
-                </div>
+
             </main>
         </div>
     );

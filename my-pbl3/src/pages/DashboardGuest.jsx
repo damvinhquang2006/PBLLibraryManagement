@@ -50,7 +50,7 @@ const DashboardGuest = () => {
                 <div className="card-grid" style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
                     
                     {/* Card Đăng nhập đã được loại bỏ, chỉ giữ lại Thư viện PBL */}
-                    <div className="card clickable" onClick={() => navigate('/pbl-library')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    <div className="card clickable" onClick={() => navigate('/thu-vien-pbl')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-columns" style={{ fontSize: '24px' }}></i>
                         </div>
