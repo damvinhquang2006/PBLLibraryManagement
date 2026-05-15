@@ -30,27 +30,40 @@ const Login = () => {
             // 1. Gọi API: chỉ truyền email và password theo thiết kế mới
             const backendResponse = await loginUser(email, password);
 
-            // 2. Phân tích Role từ Backend (ví dụ: 'LECTURER', 'ADMIN', 'STUDENT')
+            // 2. Lấy JWT access token từ response (hỗ trợ nhiều tên field)
+            const token = backendResponse.accessToken
+                       || backendResponse.token
+                       || backendResponse.access_token
+                       || null;
+
+            if (!token) {
+                throw new Error('Không nhận được access token từ server.');
+            }
+
+            // Lưu token vào sessionStorage để các API call sau dùng
+            sessionStorage.setItem('pbl_token', token);
+
+            // 3. Phân tích Role từ Backend (ví dụ: 'LECTURER', 'ADMIN', 'STUDENT')
             const config = ROLE_CONFIG[backendResponse.role];
 
             if (!config) {
                 throw new Error('Vai trò người dùng không hợp lệ từ hệ thống.');
             }
 
-            // 3. Chuẩn bị dữ liệu cho AuthContext (kèm các trường mockup để giao diện không bị trống)
+            // 4. Chuẩn bị dữ liệu cho AuthContext
             const userData = {
-                id: backendResponse.Id,
-                email: backendResponse.email,
-                role: config.role, // Chuyển sang 'SV', 'GV', hoặc 'AD'
-                username: backendResponse.email.split('@')[0], // Tạm lấy email làm tên
-                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${backendResponse.Id}`,
-                message: backendResponse.message
+                id:       backendResponse.id   || backendResponse.Id,
+                email:    backendResponse.email,
+                role:     config.role,          // 'SV', 'GV', hoặc 'AD'
+                username: backendResponse.email.split('@')[0],
+                avatar:   `https://api.dicebear.com/7.x/avataaars/svg?seed=${backendResponse.id || backendResponse.Id}`,
+                message:  backendResponse.message
             };
 
-            // 4. Lưu vào AuthContext
+            // 5. Lưu vào AuthContext
             login(userData);
 
-            // 5. Điều hướng
+            // 6. Điều hướng
             navigate(config.route);
         } catch (err) {
             setError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');

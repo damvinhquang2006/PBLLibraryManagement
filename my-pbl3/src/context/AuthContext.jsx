@@ -8,6 +8,7 @@
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
+
 // ─── Tạo context ──────────────────────────────────────────────────────────────
 const AuthContext = createContext(null);
 
@@ -32,6 +33,19 @@ export function AuthProvider({ children }) {
         sessionStorage.setItem('pbl_user', JSON.stringify(userData));
     }, []);
 
+    /**
+     * Cập nhật một phần thông tin user (merge vào dữ liệu hiện tại).
+     * Dùng sau khi fetch profile thật từ API.
+     * @param {object} partialData
+     */
+    const updateUser = useCallback((partialData) => {
+        setUser(prev => {
+            const merged = { ...prev, ...partialData };
+            sessionStorage.setItem('pbl_user', JSON.stringify(merged));
+            return merged;
+        });
+    }, []);
+
     /** Xoá thông tin user khi đăng xuất. */
     const logout = useCallback(() => {
         setUser(null);
@@ -39,7 +53,7 @@ export function AuthProvider({ children }) {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, updateUser }}>
             {children}
         </AuthContext.Provider>
     );

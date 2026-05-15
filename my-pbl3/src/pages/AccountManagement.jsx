@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getStudentById } from '../services/studentService';
 
 const AccountManagement = () => {
     const navigate = useNavigate();
@@ -10,6 +11,11 @@ const AccountManagement = () => {
     const [classFilter, setClassFilter] = useState('');
     const [showFilterDialog, setShowFilterDialog] = useState(null);
     const [filterSearch, setFilterSearch] = useState('');
+    
+    // State cho Modal chi tiết sinh viên
+    const [selectedStudent, setSelectedStudent] = useState(null);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [modalLoading, setModalLoading] = useState(false);
 
     const faculties = ['Công nghệ Thông tin', 'Điện - Điện tử', 'Cơ khí', 'Xây dựng', 'Kinh tế'];
     const classes = ['22T_DT1', '22T_DT2', '21T_DT1', '20T_DT3', '23T_DT1', '22T_CK1'];
@@ -102,6 +108,35 @@ const AccountManagement = () => {
 
     const handleViewOnly = (user) => {
         alert(`Thông tin tài khoản Admin:\nHọ tên: ${user.username}\nEmail: ${user.email}\nĐơn vị: ${user.faculty}`);
+    };
+
+    const handleViewDetails = async (id) => {
+        setModalLoading(true);
+        setIsViewModalOpen(true);
+        setSelectedStudent(null);
+        try {
+            const data = await getStudentById(id);
+            setSelectedStudent(data);
+        } catch (error) {
+            console.error('Lỗi khi lấy chi tiết SV:', error);
+            // Fallback nếu API lỗi hoặc đang dùng mock data
+            const mock = users.find(u => u.id === id);
+            if (mock) {
+                setSelectedStudent({
+                    id: mock.id,
+                    fullName: mock.username,
+                    email: mock.email,
+                    gender: 'N/A',
+                    dateOfBirth: 'N/A',
+                    phoneNumber: 'Chưa cập nhật',
+                    homeTown: 'Chưa cập nhật',
+                    homeClass: mock.class_name,
+                    majorName: mock.faculty
+                });
+            }
+        } finally {
+            setModalLoading(false);
+        }
     };
 
     const clearFacultyFilter = () => setFacultyFilter('');
@@ -266,8 +301,11 @@ const AccountManagement = () => {
                                                 </button>
                                             ) : (
                                                 <div style={{ display: 'flex', gap: '10px' }}>
-                                                    <button onClick={() => handleEdit(u)} style={{ border: 'none', background: '#f0f9ff', color: '#0066cc', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>✏️</button>
-                                                    <button onClick={() => handleDelete(u)} style={{ border: 'none', background: '#fff1f2', color: '#e11d48', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>🗑️</button>
+                                                    {activeTab === 'SV' && (
+                                                        <button onClick={() => handleViewDetails(u.id)} title="Xem chi tiết" style={{ border: 'none', background: '#f0fdf4', color: '#16a34a', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>👁️</button>
+                                                    )}
+                                                    <button onClick={() => handleEdit(u)} title="Chỉnh sửa" style={{ border: 'none', background: '#f0f9ff', color: '#0066cc', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>✏️</button>
+                                                    <button onClick={() => handleDelete(u)} title="Xóa" style={{ border: 'none', background: '#fff1f2', color: '#e11d48', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer' }}>🗑️</button>
                                                 </div>
                                             )}
                                         </td>
@@ -285,6 +323,15 @@ const AccountManagement = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Modal Chi tiết sinh viên */}
+            {isViewModalOpen && (
+                <StudentDetailModal 
+                    student={selectedStudent} 
+                    loading={modalLoading} 
+                    onClose={() => setIsViewModalOpen(false)} 
+                />
+            )}
         </div>
     );
 };
@@ -341,5 +388,90 @@ const MiniFilterDialog = ({ title, items, search, setSearch, onSelect }) => {
         </div>
     );
 };
+
+const StudentDetailModal = ({ student, loading, onClose }) => {
+    if (!student && !loading) return null;
+
+    return (
+        <div style={{
+            position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            zIndex: 2000, backdropFilter: 'blur(4px)'
+        }} onClick={onClose}>
+            <div style={{
+                backgroundColor: '#fff', width: '600px', borderRadius: '24px', padding: '0',
+                boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', overflow: 'hidden', position: 'relative',
+                animation: 'modalSlideUp 0.4s ease-out'
+            }} onClick={e => e.stopPropagation()}>
+                
+                {/* Header dải màu */}
+                <div style={{ height: '120px', background: 'linear-gradient(135deg, #003366 0%, #0066cc 100%)', position: 'relative' }}>
+                    <button onClick={onClose} style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(255,255,255,0.2)', border: 'none', color: '#fff', width: '35px', height: '35px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+                </div>
+
+                {loading ? (
+                    <div style={{ padding: '60px', textAlign: 'center' }}>
+                        <div className="spinner" style={{ border: '4px solid #f3f3f3', borderTop: '4px solid #003366', borderRadius: '50%', width: '40px', height: '40px', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }}></div>
+                        <p style={{ color: '#666' }}>Đang tải thông tin chi tiết...</p>
+                    </div>
+                ) : (
+                    <div style={{ padding: '30px', marginTop: '-60px' }}>
+                        {/* Avatar & Basic Info */}
+                        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                            <div style={{ width: '120px', height: '120px', borderRadius: '50%', border: '5px solid #fff', margin: '0 auto 15px', overflow: 'hidden', backgroundColor: '#f8f9fa', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
+                                {student.avatar ? (
+                                    <img src={student.avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                ) : (
+                                    <span style={{ fontSize: '3rem' }}>👤</span>
+                                )}
+                            </div>
+                            <h2 style={{ margin: '0 0 5px 0', color: '#003366', fontSize: '1.5rem' }}>{student.fullName}</h2>
+                            <span style={{ backgroundColor: '#eef2ff', color: '#003366', padding: '4px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 'bold', textTransform: 'uppercase' }}>Sinh viên</span>
+                        </div>
+
+                        {/* Info Grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                            <DetailItem icon="🆔" label="Mã số (ID)" value={student.id} />
+                            <DetailItem icon="📧" label="Email" value={student.email} />
+                            <DetailItem icon="🚻" label="Giới tính" value={student.gender === 'MALE' ? 'Nam' : (student.gender === 'FEMALE' ? 'Nữ' : student.gender)} />
+                            <DetailItem icon="📅" label="Ngày sinh" value={student.dateOfBirth} />
+                            <DetailItem icon="🏫" label="Lớp" value={student.homeClass || 'Chưa rõ'} />
+                            <DetailItem icon="🎓" label="Chuyên ngành" value={student.majorName} />
+                            <DetailItem icon="📍" label="Quê quán" value={student.homeTown} />
+                            <DetailItem icon="📞" label="Số điện thoại" value={student.phoneNumber} />
+                        </div>
+
+                        <div style={{ marginTop: '30px', textAlign: 'center' }}>
+                            <button onClick={onClose} style={{ padding: '10px 40px', borderRadius: '10px', border: 'none', backgroundColor: '#003366', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>
+                                Đóng
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            <style>{`
+                @keyframes modalSlideUp {
+                    from { opacity: 0; transform: translateY(30px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `}</style>
+        </div>
+    );
+};
+
+const DetailItem = ({ icon, label, value }) => (
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'center', padding: '10px 15px', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #f1f4f9' }}>
+        <span style={{ fontSize: '1.2rem' }}>{icon}</span>
+        <div>
+            <div style={{ fontSize: '0.7rem', color: '#888', fontWeight: '500' }}>{label}</div>
+            <div style={{ fontSize: '0.9rem', color: '#333', fontWeight: '600' }}>{value || 'Chưa cập nhật'}</div>
+        </div>
+    </div>
+);
 
 export default AccountManagement;

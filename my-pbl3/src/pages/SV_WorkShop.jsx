@@ -107,8 +107,16 @@ const SV_WorkShop = () => {
 
     return (
         <div className="dashboard-body" style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
-            <header className="navbar" style={{ backgroundColor: '#003366', color: 'white', padding: '10px 50px', display: 'flex', alignItems: 'center' }}>
-                <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+<header className="navbar" style={{ 
+    backgroundColor: '#003366', 
+    color: 'white', 
+    padding: '15px 40px', 
+    display: 'flex', 
+    alignItems: 'center',
+    width: '100% !important',  // Cưỡng bức rộng 100%
+    maxWidth: 'none !important', // Loại bỏ mọi giới hạn rộng
+    boxSizing: 'border-box' 
+}}>          <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <i className="fas fa-book-open" style={{ fontSize: '28px' }}></i>
                     <div>
                         <h1 style={{ fontSize: '1.2rem', margin: 0 }}>Hệ thống PBL</h1>
@@ -117,7 +125,14 @@ const SV_WorkShop = () => {
                 </div>
             </header>
 
-            <main className="container" style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
+<main className="container" style={{ 
+    width: '100% !important',      // Ép rộng 100%
+    maxWidth: '100% !important',   // Phá bỏ giới hạn maxWidth từ CSS
+    margin: '0 !important',        // Loại bỏ căn giữa (margin auto)
+    padding: '20px 40px',          // Giữ khoảng cách 2 bên để nội dung không dính mép
+    boxSizing: 'border-box',
+    display: 'block'               // Đảm bảo là khối hiển thị đầy đủ
+}}>
                 <div style={{ textAlign: 'left', marginBottom: '25px' }}>
                     <button 
                         onClick={() => navigate(`/sv-truy-cap-lop?userID=${currentUserID}&role=${currentRole}`)} 
@@ -127,7 +142,18 @@ const SV_WorkShop = () => {
                     </button>
                 </div>
                 
-                <div className="class-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', backgroundColor: 'white', padding: '25px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
+                <div className="class-header" style={{ 
+    display: 'flex', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    marginBottom: '30px', 
+    backgroundColor: 'white', 
+    padding: '25px', 
+    borderRadius: '10px', 
+    boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+    width: '100%',           // Đảm bảo thẻ header lớp học rộng hết cỡ
+    boxSizing: 'border-box'
+}}>
                     <div style={{ textAlign: 'left' }}>
                         <h2 style={{ color: '#003366', margin: 0, fontSize: '1.8rem' }}>{classData.tenLop}</h2>
                         <p style={{ color: '#666', margin: '5px 0 0' }}>Giảng viên: <strong>{classData.gvhd}</strong> | <span>{classData.hocKy}</span></p>
@@ -169,9 +195,16 @@ const SV_WorkShop = () => {
                             <i className={tab.icon}></i> {tab.label}
                         </button>
                     ))}
-                </div>
+                </div>  
 
-                <div className="stats-card" style={{ padding: '30px', textAlign: 'left' }}>
+                <div 
+                className="stats-card" 
+                style={{ 
+                    padding: '30px', 
+                    textAlign: 'left',
+                    width: '100%',           
+                    boxSizing: 'border-box'
+                }}>
                     {activeTab === 'thong-bao' && (
                         <div>
                             {classData.thongBao.map((item, idx) => (

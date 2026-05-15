@@ -45,8 +45,8 @@ const ThuVienPBL = () => {
     };
 
     return (
-        <div className="dashboard-body" style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
-            <header className="navbar" style={{ backgroundColor: '#003366', color: 'white', padding: '10px 50px', display: 'flex', alignItems: 'center' }}>
+        <div className="dashboard-body" style={{ minHeight: '100vh', backgroundColor: '#f8f9fa', width: '100vw', margin: 0, padding: 0, overflowX: 'hidden' }}>
+            <header className="navbar" style={{ backgroundColor: '#003366', color: 'white', padding: '10px 50px', display: 'flex', alignItems: 'center', width: '100%', boxSizing: 'border-box', justifyContent: 'space-between' }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <i className="fas fa-book-open" style={{ fontSize: '28px' }}></i>
                     <div>
@@ -61,7 +61,8 @@ const ThuVienPBL = () => {
                 )}
             </header>
 
-            <main className="container" style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
+            {/* Thay đổi class container và áp dụng width 100% tuyệt đối */}
+            <main style={{ width: '100%', padding: '40px 50px', boxSizing: 'border-box' }}>
                 <div style={{ textAlign: 'left', marginBottom: '25px' }}>
                     <button 
                         onClick={() => navigate(-1)} 
@@ -76,15 +77,16 @@ const ThuVienPBL = () => {
                     <p style={{ color: '#666', fontSize: '1.2rem' }}>Khám phá các dự án PBL xuất sắc từ các khóa trước</p>
                 </div>
 
-                <div style={{ display: 'flex', gap: '20px', marginBottom: '40px', backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-                    <div className="search-container" style={{ margin: 0, maxWidth: 'none' }}>
+                {/* Thanh tìm kiếm dãn rộng */}
+                <div style={{ display: 'flex', gap: '20px', marginBottom: '40px', backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', width: '100%', boxSizing: 'border-box' }}>
+                    <div className="search-container" style={{ margin: 0, maxWidth: 'none', flex: 1 }}>
                         <i className="fas fa-search"></i>
                         <input 
                             type="text" 
                             placeholder="Tìm kiếm theo tên, mô tả, hoặc tags..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            style={{ backgroundColor: '#f8f9fa', border: '1px solid #eee' }}
+                            style={{ backgroundColor: '#f8f9fa', border: '1px solid #eee', width: '100%' }}
                         />
                     </div>
                     <div style={{ minWidth: '200px' }}>
@@ -101,9 +103,10 @@ const ThuVienPBL = () => {
                     </div>
                 </div>
 
-                <div className="card-grid">
+                {/* Lực ép card-grid dãn rộng theo chiều ngang màn hình */}
+                <div className="card-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: '30px', width: '100%', maxWidth: 'none' }}>
                     {filteredProjects.map(project => (
-                        <div key={project.id} className="card" style={{ textAlign: 'left', padding: '30px' }}>
+                        <div key={project.id} className="card" style={{ textAlign: 'left', padding: '30px', width: '100%', boxSizing: 'border-box' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px' }}>
                                 <h3 style={{ margin: 0, fontSize: '1.3rem' }}>{project.title}</h3>
                                 <span style={{ padding: '4px 10px', backgroundColor: '#eef2ff', color: '#003366', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>{project.categoryText}</span>
