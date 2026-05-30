@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import '../css/Dashboard.css';
 import '../css/DashboardExt.css';
+import useDownloadWithSaveAs from '../js/useDownloadWithSaveAs';
 
 const ThuVienPBL_Xem = () => {
     const navigate = useNavigate();
@@ -9,14 +10,56 @@ const ThuVienPBL_Xem = () => {
     const name = searchParams.get('name') || "Hệ thống quản lý thư viện trực tuyến";
     const category = searchParams.get('cat') || "Web Development";
 
+    const { downloading, downloadStatus, handleDownloadWithSaveAs } = useDownloadWithSaveAs();
+    const [toast, setToast] = useState({ visible: false, type: null, message: '' });
+
+    // File đính kèm của trang xem chi tiết này.
+    // Đổi thành URL API backend khi có server thực:
+    //   `http://localhost:8080/api/reports/download/BaoCao_PBL_Full.docx`
+    const ATTACHMENT_FILE_URL  = '/wordfiles/Quản lý đề tài PBL version Quang.docx';
+    const ATTACHMENT_FILE_NAME = 'Quản lý đề tài PBL version Quang.docx';
+
+    // Hiển thị toast thông báo kết quả tải file
+    useEffect(() => {
+        if (downloadStatus.type === 'success' || downloadStatus.type === 'error') {
+            setToast({ visible: true, type: downloadStatus.type, message: downloadStatus.message });
+            const timer = setTimeout(() => setToast({ visible: false, type: null, message: '' }), 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [downloadStatus]);
+
+    const handleDownload = async () => {
+        await handleDownloadWithSaveAs(ATTACHMENT_FILE_URL, ATTACHMENT_FILE_NAME);
+    };
+
+    // Màu sắc của toast thông báo
+    const toastColors = {
+        success: { bg: '#d1fae5', border: '#10b981', text: '#065f46' },
+        error:   { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' },
+    };
+
     return (
         <div className="dashboard-body" style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
-            <header className="navbar" style={{ backgroundColor: '#003366', color: 'white', padding: '10px 50px', display: 'flex', alignItems: 'center' }}>
+            {/* ── Toast thông báo kết quả tải ── */}
+            {toast.visible && toast.type && (
+                <div style={{
+                    position: 'fixed', bottom: '30px', right: '30px', zIndex: 9999,
+                    padding: '14px 22px', borderRadius: '10px', fontWeight: 600,
+                    fontSize: '0.95rem', boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                    backgroundColor: toastColors[toast.type]?.bg,
+                    border: `1.5px solid ${toastColors[toast.type]?.border}`,
+                    color: toastColors[toast.type]?.text,
+                    maxWidth: '380px'
+                }}>
+                    {toast.message}
+                </div>
+            )}
+            <header className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 40px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 1000 }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <i className="fas fa-book-open" style={{ fontSize: '28px' }}></i>
-                    <div>
-                        <h1 style={{ fontSize: '1.2rem', margin: 0 }}>Hệ thống PBL</h1>
-                        <p style={{ fontSize: '0.8rem', margin: 0, opacity: 0.8 }}>Project-Based Learning Portal</p>
+                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '4px' }} />
+                    <div style={{ textAlign: 'left' }}>
+                        <h1 style={{ margin: 0, fontSize: '20px' }}>Hệ thống PBL</h1>
+                        <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
                     </div>
                 </div>
             </header>
@@ -65,8 +108,23 @@ const ThuVienPBL_Xem = () => {
                         <i className="far fa-file-archive" style={{ fontSize: '2rem' }}></i>
                         <span style={{ fontSize: '1.1rem' }}>PBL_SourceCode_Document_Full.zip</span>
                     </div>
-                    <button className="btn" style={{ backgroundColor: '#10b981', color: 'white', border: 'none', padding: '12px 30px', borderRadius: '8px', fontWeight: 'bold', width: 'auto' }}>
-                        <i className="fas fa-download"></i> Tải xuống ngay
+                    <button 
+                        className="btn" 
+                        style={{
+                            backgroundColor: '#10b981', color: 'white', border: 'none',
+                            padding: '12px 30px', borderRadius: '8px', fontWeight: 'bold',
+                            width: 'auto', display: 'flex', alignItems: 'center', gap: '8px',
+                            opacity: downloading ? 0.7 : 1,
+                            cursor: downloading ? 'not-allowed' : 'pointer'
+                        }}
+                        onClick={handleDownload}
+                        disabled={downloading}
+                    >
+                        {downloading ? (
+                            <><i className="fas fa-spinner fa-spin"></i> Đang xử lý...</>
+                        ) : (
+                            <><i className="fas fa-download"></i> Tải xuống ngay</>
+                        )}
                     </button>
                 </div>
 

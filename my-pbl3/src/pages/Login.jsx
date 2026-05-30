@@ -6,9 +6,9 @@ import { useAuth } from '../context/AuthContext';
 
 // Ánh xạ vai trò từ Backend sang Route của Frontend
 const ROLE_CONFIG = {
-    'STUDENT': { role: 'SV', route: '/dashboard-sv', label: 'Sinh viên' },
-    'LECTURER': { role: 'GV', route: '/dashboard-gv', label: 'Giảng viên' },
-    'ADMIN': { role: 'AD', route: '/dashboard-admin', label: 'Admin' },
+    'STUDENT':  { route: '/dashboard-sv' },
+    'LECTURER': { route: '/dashboard-gv' },
+    'ADMIN':    { route: '/dashboard-admin' },
 };
 
 const Login = () => {
@@ -37,14 +37,14 @@ const Login = () => {
                 throw new Error('Vai trò người dùng không hợp lệ từ hệ thống.');
             }
 
-            // 3. Chuẩn bị dữ liệu cho AuthContext (kèm các trường mockup để giao diện không bị trống)
+            // 3. Chuẩn bị dữ liệu cho AuthContext
+            // Backend có thể trả 'id' hoặc 'Id' tùy cấu hình serializer
+            const resolvedId = backendResponse.id || backendResponse.Id;
             const userData = {
-                id: backendResponse.Id,
+                id: resolvedId,
                 email: backendResponse.email,
-                role: config.role, // Chuyển sang 'SV', 'GV', hoặc 'AD'
-                username: backendResponse.email.split('@')[0], // Tạm lấy email làm tên
-                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${backendResponse.Id}`,
-                message: backendResponse.message
+                role: backendResponse.role, // Giữ nguyên: 'STUDENT', 'LECTURER', 'ADMIN'
+                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${resolvedId}`,
             };
 
             // 4. Lưu vào AuthContext

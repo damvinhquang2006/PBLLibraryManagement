@@ -1,0 +1,1 @@
+globalThis.fi = (id) => { if(['os','tty','fs','path','child_process','events','crypto','net','util'].includes(id)) return require(id); }; import('file:///C:/Users/VINH_QUANG/AppData/Local/kiro-cli/tui.js');

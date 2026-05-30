@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../css/Dashboard.css';
 import '../css/DashboardExt.css';
 
@@ -29,6 +30,7 @@ const StatNumber = ({ target }) => {
 
 const DashboardAdmin = () => {
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
     const [showMenu, setShowMenu] = useState(false);
 
     return (
@@ -36,7 +38,7 @@ const DashboardAdmin = () => {
             
             <header className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 40px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 1000 }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <i className="fas fa-book-open" style={{ fontSize: '28px' }}></i>
+                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '4px' }} />
                     <div style={{ textAlign: 'left' }}>
                         <h1 style={{ margin: 0, fontSize: '20px' }}>Hệ thống PBL</h1>
                         <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
@@ -62,8 +64,8 @@ const DashboardAdmin = () => {
                             userSelect: 'none'
                         }}
                     >
-                        <i className="fas fa-user-shield" style={{ fontSize: '18px' }}></i> 
-                        admin@system.com
+                        <i className="fas fa-user-shield" style={{ fontSize: '18px' }}></i>
+                        {user?.email ?? 'Admin'}
                         <i className={`fas fa-chevron-${showMenu ? 'up' : 'down'}`} style={{ fontSize: '12px', marginLeft: '5px' }}></i>
                     </div>
 
@@ -81,16 +83,16 @@ const DashboardAdmin = () => {
                         }}>
                             <div 
                                 className="menu-item" 
-                                onClick={() => { setShowMenu(false); /* navigate to profile */ }}
+                                onClick={() => { setShowMenu(false); navigate('/profile'); }}
                                 style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.2s', color: '#003366' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                             >
-                                <i className="fas fa-user-circle"></i> Kiểm tra tài khoản
+                                <i className="fas fa-user-circle"></i> Hồ sơ cá nhân
                             </div>
                             <div 
                                 className="menu-item" 
-                                onClick={() => navigate('/')}
+                                onClick={() => { setShowMenu(false); logout(); navigate('/'); }}
                                 style={{ padding: '12px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', color: '#dc3545', borderTop: '1px solid #eee', transition: 'background 0.2s' }}
                                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#fff5f5'}
                                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}

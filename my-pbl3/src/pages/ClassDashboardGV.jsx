@@ -19,7 +19,7 @@ const ClassDashboardGV = () => {
             
             <header className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 40px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 1000 }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <i className="fas fa-book-open" style={{ fontSize: '28px' }}></i>
+                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '4px' }} />
                     <div style={{ textAlign: 'left' }}>
                         <h1 style={{ margin: 0, fontSize: '20px' }}>Hệ thống PBL</h1>
                         <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
@@ -108,13 +108,12 @@ const ClassDashboardGV = () => {
 
                 <div className="card-grid" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {[
-                        { title: 'Quản lý deadline và nhiệm vụ', icon: 'fa-tasks', primary: true },
+                        { title: 'Quản lý deadline và nhiệm vụ', icon: 'fa-tasks', primary: true, path: '/lecturer-deadlines' },
                         { title: 'Tạo milestone', icon: 'fa-flag' },
                         { title: 'Quản lý đề tài PBL', icon: 'fa-project-diagram', path: '/lecturer-topics' },
                         { title: 'Đánh giá báo cáo tiến độ', icon: 'fa-clipboard-check' },
-                        { title: 'Đánh giá báo cáo cuối kỳ', icon: 'fa-check-double', path: '/lecturer-grading' },
                         { title: 'Quản lý điểm', icon: 'fa-sort-numeric-up', path: '/lecturer-grading' },
-                        { title: 'Yêu cầu xuất bản PBL', icon: 'fa-upload', path: '/lecturer-grading' }
+                        { title: 'Yêu cầu xuất bản PBL', icon: 'fa-upload', path: '/lecturer-publish' }
                     ].map((item, idx) => (
                         <div 
                             key={idx} 

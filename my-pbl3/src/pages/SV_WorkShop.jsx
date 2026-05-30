@@ -107,17 +107,17 @@ const SV_WorkShop = () => {
 
     return (
         <div className="dashboard-body" style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
-            <header className="navbar" style={{ backgroundColor: '#003366', color: 'white', padding: '10px 50px', display: 'flex', alignItems: 'center' }}>
+            <header className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 40px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 1000 }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <i className="fas fa-book-open" style={{ fontSize: '28px' }}></i>
-                    <div>
-                        <h1 style={{ fontSize: '1.2rem', margin: 0 }}>Hệ thống PBL</h1>
-                        <p style={{ fontSize: '0.8rem', margin: 0, opacity: 0.8 }}>Project-Based Learning Portal</p>
+                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '4px' }} />
+                    <div style={{ textAlign: 'left' }}>
+                        <h1 style={{ margin: 0, fontSize: '20px' }}>Hệ thống PBL</h1>
+                        <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
                     </div>
                 </div>
             </header>
 
-            <main className="container" style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
+            <main className="container-fluid" style={{ maxWidth: '100%', margin: '40px auto', padding: '0 40px', boxSizing: 'border-box' }}>
                 <div style={{ textAlign: 'left', marginBottom: '25px' }}>
                     <button 
                         onClick={() => navigate(`/sv-truy-cap-lop?userID=${currentUserID}&role=${currentRole}`)} 

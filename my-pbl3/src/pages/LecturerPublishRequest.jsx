@@ -3,61 +3,67 @@ import { useNavigate } from 'react-router-dom';
 import '../css/Dashboard.css';
 import '../css/DashboardExt.css';
 
-const LecturerGrading = () => {
+const LecturerPublishRequest = () => {
     const navigate = useNavigate();
-    
-    // Data giả lập các nhóm đăng ký chấm điểm
-    const [groups, setGroups] = useState([
-        { 
-            id: 1, 
-            groupNumber: 1, 
+
+    // Dữ liệu giả lập các nhóm đăng ký yêu cầu xuất bản
+    const [publishRequests, setPublishRequests] = useState([
+        {
+            id: 1,
+            groupNumber: 1,
             topicName: 'Hệ thống nhận diện khuôn mặt điểm danh sinh viên',
             members: [
                 { id: '102220123', fullName: 'Nguyễn Như Quỳnh', email: 'quynh.nn@sv.dut.udn.vn', homeClass: '22T_DT2' },
                 { id: '102220456', fullName: 'Lê Văn An', email: 'an.lv@sv.dut.udn.vn', homeClass: '22T_DT2' },
                 { id: '102220789', fullName: 'Trần Minh Hải', email: 'hai.tm@sv.dut.udn.vn', homeClass: '22T_DT2' }
             ],
-            status: 'Đã nộp',
-            submissionLink: 'https://github.com/pbl3/alphas-project',
-            processScore: 8.5, 
+            localFolderLink: 'file:///D:/PBLLibraryManagement/submissions/group1',
+            processScore: 8.5,
             finalScore: 9.0,
-            feedback: 'Dự án hoàn thiện tốt, giao diện đẹp.'
+            status: 'Đang chờ duyệt xuất bản' // 'Đang chờ duyệt xuất bản' / 'Đã xuất bản'
         },
-        { 
-            id: 2, 
-            groupNumber: 2, 
+        {
+            id: 2,
+            groupNumber: 2,
             topicName: 'Ứng dụng quản lý tài chính cá nhân thông minh',
             members: [
                 { id: '102210111', fullName: 'Phạm Hoàng Nam', email: 'nam.ph@sv.dut.udn.vn', homeClass: '21T_DT1' },
                 { id: '102210222', fullName: 'Lê Thị Thu Thảo', email: 'thao.ltt@sv.dut.udn.vn', homeClass: '21T_DT1' }
             ],
-            status: 'Chưa nộp',
-            submissionLink: null,
-            processScore: 7.0, 
-            finalScore: 0,
-            feedback: ''
+            localFolderLink: 'file:///D:/PBLLibraryManagement/submissions/group2',
+            processScore: 7.0,
+            finalScore: 8.0,
+            status: 'Đang chờ duyệt xuất bản'
         },
-        { 
-            id: 3, 
-            groupNumber: 3, 
+        {
+            id: 3,
+            groupNumber: 3,
             topicName: 'Website bán thiết bị điện tử gia dụng tích hợp AI gợi ý',
             members: [
                 { id: '102220999', fullName: 'Hoàng Văn Dũng', email: 'dung.hv@sv.dut.udn.vn', homeClass: '22T_CLC1' },
                 { id: '102220888', fullName: 'Nguyễn Thị Hoa', email: 'hoa.nt@sv.dut.udn.vn', homeClass: '22T_CLC1' },
                 { id: '102220777', fullName: 'Đỗ Tiến Đạt', email: 'dat.dt@sv.dut.udn.vn', homeClass: '22T_CLC1' }
             ],
-            status: 'Đã nộp',
-            submissionLink: 'https://github.com/pbl3/gamma-project',
-            processScore: 9.0, 
+            localFolderLink: 'file:///D:/PBLLibraryManagement/submissions/group3',
+            processScore: 9.0,
             finalScore: 9.5,
-            feedback: 'Báo cáo chi tiết, lập trình frontend chuyên nghiệp.'
+            status: 'Đã xuất bản'
         }
     ]);
 
     const [selectedGroup, setSelectedGroup] = useState(null);
 
-    const handleSave = (id) => {
-        alert('Đã lưu điểm và nhận xét cho nhóm!');
+    // Xử lý gửi yêu cầu xuất bản
+    const handleRequestPublish = (id, topicName) => {
+        setPublishRequests(prev =>
+            prev.map(item => {
+                if (item.id === id) {
+                    alert(`Đã gửi yêu cầu xuất bản thành công cho đề tài: "${topicName}"!`);
+                    return { ...item, status: 'Đã xuất bản' };
+                }
+                return item;
+            })
+        );
     };
 
     return (
@@ -65,10 +71,10 @@ const LecturerGrading = () => {
             {/* Header đồng bộ */}
             <header className="navbar" style={{ backgroundColor: '#003366', color: 'white', padding: '10px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <i className="fas fa-star" style={{ fontSize: '24px' }}></i>
+                    <i className="fas fa-upload" style={{ fontSize: '24px' }}></i>
                     <div>
-                        <h1 style={{ fontSize: '1.2rem', margin: 0 }}>Đánh giá & Quản lý Điểm</h1>
-                        <p style={{ fontSize: '0.8rem', margin: 0, opacity: 0.8 }}>Chấm điểm tiến độ và báo cáo cuối kỳ</p>
+                        <h1 style={{ fontSize: '1.2rem', margin: 0 }}>Yêu cầu xuất bản PBL</h1>
+                        <p style={{ fontSize: '0.8rem', margin: 0, opacity: 0.8 }}>Hệ thống quản lý & lưu trữ đồ án</p>
                     </div>
                 </div>
                 <button onClick={() => navigate(-1)} className="back-btn" style={{ color: 'white', borderColor: 'rgba(255,255,255,0.3)', backgroundColor: 'transparent' }}>
@@ -81,14 +87,14 @@ const LecturerGrading = () => {
                 
                 {/* Tiêu đề căn lề trái đồng bộ */}
                 <div className="welcome-text" style={{ marginBottom: '30px', textAlign: 'left' }}>
-                    <h2 style={{ color: '#003366', fontSize: '1.8rem', fontWeight: 'bold' }}>Bảng điểm chi tiết & Đánh giá báo cáo</h2>
-                    <p style={{ color: '#666', marginTop: '5px' }}>Theo dõi bài nộp và thực hiện chấm điểm trực tiếp của các nhóm sinh viên</p>
+                    <h2 style={{ color: '#003366', fontSize: '1.8rem', fontWeight: 'bold' }}>Quản lý & Yêu cầu xuất bản đề tài PBL</h2>
+                    <p style={{ color: '#666', marginTop: '5px' }}>Phê duyệt hồ sơ báo cáo của các nhóm và gửi yêu cầu xuất bản dự án lên Thư viện số</p>
                 </div>
 
-                {/* Bảng quản lý điểm */}
+                {/* Bảng hồ sơ yêu cầu xuất bản */}
                 <div style={{ backgroundColor: '#fff', padding: '30px', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
-                        <h3 style={{ margin: 0, color: '#003366', fontSize: '1.2rem', fontWeight: 'bold' }}>Đánh giá tiến độ đồ án</h3>
+                        <h3 style={{ margin: 0, color: '#003366', fontSize: '1.2rem', fontWeight: 'bold' }}>Danh sách đề tài đủ điều kiện xuất bản</h3>
                     </div>
 
                     <div style={{ overflowX: 'auto' }}>
@@ -97,34 +103,31 @@ const LecturerGrading = () => {
                                 <tr style={{ textAlign: 'left', borderBottom: '2px solid #f4f7fe' }}>
                                     <th style={{ padding: '15px', color: '#64748b', fontWeight: '600' }}>Nhóm số</th>
                                     <th style={{ padding: '15px', color: '#64748b', fontWeight: '600' }}>Tên đề tài</th>
-                                    <th style={{ padding: '15px', color: '#64748b', fontWeight: '600', textAlign: 'center' }}>Thành viên</th>
-                                    <th style={{ padding: '15px', color: '#64748b', fontWeight: '600', textAlign: 'center' }}>Trạng thái</th>
+                                    <th style={{ padding: '15px', color: '#64748b', fontWeight: '600', textAlign: 'center' }}>Chi tiết thành viên</th>
                                     <th style={{ padding: '15px', color: '#64748b', fontWeight: '600' }}>Bài làm</th>
-                                    <th style={{ padding: '15px', color: '#64748b', fontWeight: '600', width: '90px', textAlign: 'center' }}>Điểm QT</th>
-                                    <th style={{ padding: '15px', color: '#64748b', fontWeight: '600', width: '90px', textAlign: 'center' }}>Điểm CK</th>
-                                    <th style={{ padding: '15px', color: '#64748b', fontWeight: '600' }}>Đánh giá & Nhận xét</th>
+                                    <th style={{ padding: '15px', color: '#64748b', fontWeight: '600' }}>Điểm tổng kết</th>
+                                    <th style={{ padding: '15px', color: '#64748b', fontWeight: '600', textAlign: 'center' }}>Trạng thái</th>
+                                    <th style={{ padding: '15px', color: '#64748b', fontWeight: '600', textAlign: 'center' }}>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {groups.map(group => (
-                                    <tr key={group.id} style={{ borderBottom: '1px solid #f4f7fe', transition: 'background-color 0.2s' }}>
+                                {publishRequests.map(item => (
+                                    <tr key={item.id} style={{ borderBottom: '1px solid #f4f7fe', transition: 'background-color 0.2s' }}>
                                         {/* Cột 1: Nhóm số */}
                                         <td style={{ padding: '15px', fontWeight: 'bold', color: '#003366' }}>
-                                            Nhóm {group.groupNumber}
+                                            Nhóm {item.groupNumber}
                                         </td>
                                         
                                         {/* Cột 2: Tên đề tài */}
                                         <td style={{ padding: '15px', fontWeight: '600', color: '#334155', maxWidth: '280px' }}>
-                                            {group.topicName}
+                                            {item.topicName}
                                         </td>
                                         
-                                        {/* Cột 3: Thành viên (Xem thêm viền premium) */}
+                                        {/* Cột 3: Chi tiết thành viên (Nút có viền premium) */}
                                         <td style={{ padding: '15px', textAlign: 'center' }}>
-                                            <div style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '5px' }}>
-                                                {group.members.length} thành viên
-                                            </div>
+                                            <div style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '5px' }}>{item.members.length} thành viên</div>
                                             <button 
-                                                onClick={() => setSelectedGroup(group)}
+                                                onClick={() => setSelectedGroup(item)}
                                                 style={{ 
                                                     padding: '5px 12px', 
                                                     borderRadius: '6px', 
@@ -149,125 +152,80 @@ const LecturerGrading = () => {
                                             </button>
                                         </td>
                                         
-                                        {/* Cột 4: Trạng thái */}
+                                        {/* Cột 4: Bài làm (Local Folder link) */}
+                                        <td style={{ padding: '15px' }}>
+                                            <a 
+                                                href={item.localFolderLink} 
+                                                target="_blank" 
+                                                rel="noreferrer" 
+                                                style={{ 
+                                                    color: '#0066cc', 
+                                                    textDecoration: 'none', 
+                                                    fontSize: '0.85rem', 
+                                                    fontWeight: 'bold',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px'
+                                                }}
+                                            >
+                                                <i className="fas fa-folder-open" style={{ fontSize: '1rem', color: '#f59e0b' }}></i> Xem thư mục local
+                                            </a>
+                                        </td>
+                                        
+                                        {/* Cột 5: Điểm tổng kết */}
+                                        <td style={{ padding: '15px' }}>
+                                            <div style={{ fontSize: '0.85rem', color: '#475569' }}>
+                                                Quá trình: <strong style={{ color: '#003366' }}>{item.processScore}</strong>
+                                            </div>
+                                            <div style={{ fontSize: '0.85rem', color: '#475569', marginTop: '3px' }}>
+                                                Cuối kỳ: <strong style={{ color: '#003366' }}>{item.finalScore}</strong>
+                                            </div>
+                                        </td>
+                                        
+                                        {/* Cột 6: Trạng thái (Badge tích hợp icon) */}
                                         <td style={{ padding: '15px', textAlign: 'center' }}>
                                             <span style={{ 
                                                 padding: '6px 14px', 
                                                 borderRadius: '20px', 
                                                 fontSize: '0.8rem', 
-                                                backgroundColor: group.status === 'Đã nộp' ? '#ecfdf5' : '#fff1f2', 
-                                                color: group.status === 'Đã nộp' ? '#059669' : '#e11d48', 
+                                                backgroundColor: item.status === 'Đã xuất bản' ? '#ecfdf5' : '#fffbeb', 
+                                                color: item.status === 'Đã xuất bản' ? '#059669' : '#d97706',
                                                 fontWeight: 'bold',
                                                 display: 'inline-flex',
                                                 alignItems: 'center',
                                                 gap: '5px'
                                             }}>
-                                                <i className={group.status === 'Đã nộp' ? 'fas fa-check-circle' : 'fas fa-times-circle'}></i>
-                                                {group.status}
+                                                <i className={item.status === 'Đã xuất bản' ? 'fas fa-check-circle' : 'fas fa-clock'}></i>
+                                                {item.status}
                                             </span>
                                         </td>
-                                        
-                                        {/* Cột 5: Bài làm */}
-                                        <td style={{ padding: '15px' }}>
-                                            {group.submissionLink ? (
-                                                <a 
-                                                    href={group.submissionLink} 
-                                                    target="_blank" 
-                                                    rel="noreferrer" 
-                                                    style={{ 
-                                                        color: '#0066cc', 
-                                                        textDecoration: 'none', 
-                                                        fontSize: '0.9rem', 
-                                                        fontWeight: 'bold',
-                                                        display: 'inline-flex',
-                                                        alignItems: 'center',
-                                                        gap: '5px'
-                                                    }}
-                                                >
-                                                    <i className="fas fa-external-link-alt"></i> Xem bài nộp
-                                                </a>
-                                            ) : (
-                                                <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Chưa có file</span>
-                                            )}
-                                        </td>
-                                        
-                                        {/* Cột 6: Điểm QT */}
+
+                                        {/* Cột 7: Thao tác (Button yêu cầu xuất bản bo góc 6px) */}
                                         <td style={{ padding: '15px', textAlign: 'center' }}>
-                                            <input 
-                                                type="number" 
-                                                defaultValue={group.processScore} 
+                                            <button 
+                                                onClick={() => handleRequestPublish(item.id, item.topicName)}
+                                                disabled={item.status === 'Đã xuất bản'}
                                                 style={{ 
-                                                    width: '65px', 
-                                                    padding: '8px 10px', 
+                                                    padding: '8px 16px', 
                                                     borderRadius: '6px', 
-                                                    border: '1px solid #dce3ec', 
-                                                    outline: 'none',
-                                                    fontWeight: 'bold',
-                                                    color: '#334155',
-                                                    textAlign: 'center'
-                                                }} 
-                                            />
-                                        </td>
-                                        
-                                        {/* Cột 7: Điểm CK */}
-                                        <td style={{ padding: '15px', textAlign: 'center' }}>
-                                            <input 
-                                                type="number" 
-                                                defaultValue={group.finalScore} 
-                                                style={{ 
-                                                    width: '65px', 
-                                                    padding: '8px 10px', 
-                                                    borderRadius: '6px', 
-                                                    border: '1px solid #dce3ec', 
-                                                    outline: 'none',
-                                                    fontWeight: 'bold',
-                                                    color: '#334155',
-                                                    textAlign: 'center'
-                                                }} 
-                                            />
-                                        </td>
-                                        
-                                        {/* Cột 8: Đánh giá nhận xét */}
-                                        <td style={{ padding: '15px' }}>
-                                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                                <textarea 
-                                                    placeholder="Nhập nhận xét..."
-                                                    defaultValue={group.feedback}
-                                                    style={{ 
-                                                        flex: 1, 
-                                                        padding: '8px 12px', 
-                                                        borderRadius: '6px', 
-                                                        border: '1px solid #dce3ec', 
-                                                        fontSize: '0.85rem', 
-                                                        minHeight: '40px', 
-                                                        outline: 'none', 
-                                                        resize: 'vertical',
-                                                        color: '#334155'
-                                                    }}
-                                                />
-                                                <button 
-                                                    onClick={() => handleSave(group.id)}
-                                                    style={{ 
-                                                        width: 'auto', 
-                                                        padding: '8px 16px', 
-                                                        fontSize: '0.85rem',
-                                                        backgroundColor: '#003366',
-                                                        color: 'white',
-                                                        border: 'none',
-                                                        borderRadius: '6px',
-                                                        cursor: 'pointer',
-                                                        fontWeight: 'bold',
-                                                        display: 'inline-flex',
-                                                        alignItems: 'center',
-                                                        gap: '5px',
-                                                        transition: 'background-color 0.2s'
-                                                    }}
-                                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#002244'}
-                                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#003366'}
-                                                >
-                                                    <i className="fas fa-save"></i> Lưu
-                                                </button>
-                                            </div>
+                                                    border: 'none',
+                                                    backgroundColor: '#003366', 
+                                                    color: 'white', 
+                                                    fontSize: '0.85rem', 
+                                                    fontWeight: 'bold', 
+                                                    cursor: 'pointer',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    transition: 'all 0.2s',
+                                                    opacity: item.status === 'Đã xuất bản' ? 0.4 : 1,
+                                                    pointerEvents: item.status === 'Đã xuất bản' ? 'none' : 'auto'
+                                                }}
+                                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#002244'}
+                                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#003366'}
+                                            >
+                                                <i className="fas fa-paper-plane"></i> Yêu cầu xuất bản
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
@@ -387,4 +345,4 @@ const LecturerGrading = () => {
     );
 };
 
-export default LecturerGrading;
+export default LecturerPublishRequest;

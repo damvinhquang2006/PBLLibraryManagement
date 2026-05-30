@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Dashboard.css';
 import '../css/DashboardExt.css';
 import { useAuth } from '../context/AuthContext';
+import useDownloadWithSaveAs from '../js/useDownloadWithSaveAs';
 
 const ThuVienPBL = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
+
+    const { downloading, downloadStatus, handleDownloadWithSaveAs } = useDownloadWithSaveAs();
+    const [downloadingId, setDownloadingId] = useState(null); // Track nút nào đang tải
+    const [toast, setToast] = useState({ visible: false, type: null, message: '' });
+
+    // Hiển thị toast thông báo kết quả tải file
+    useEffect(() => {
+        if (downloadStatus.type === 'success' || downloadStatus.type === 'error') {
+            setToast({ visible: true, type: downloadStatus.type, message: downloadStatus.message });
+            const timer = setTimeout(() => setToast({ visible: false, type: null, message: '' }), 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [downloadStatus]);
 
     const projects = [
         {
@@ -19,7 +33,8 @@ const ThuVienPBL = () => {
             desc: "Dự án xây dựng hệ thống quản lý thư viện với đầy đủ chức năng mượn/trả sách, quản lý độc giả và báo cáo thống kê.",
             tech: ["React", "Node.js", "SQL Server"],
             rating: "4.5",
-            downloads: 245
+            downloads: 245,
+            fileName: "Quản lý đề tài PBL version Quang.docx"   // File thật trong public/wordfiles/
         },
         {
             id: 2,
@@ -29,7 +44,8 @@ const ThuVienPBL = () => {
             desc: "App học tiếng Anh tích hợp nhận diện giọng nói bằng AI và kho bài tập tương tác sinh động cho trẻ em.",
             tech: ["React Native", "Firebase"],
             rating: "4.9",
-            downloads: 1102
+            downloads: 1102,
+            fileName: "Xây dựng hệ thống quản lý sinh viên.docx"   // File thật trong public/wordfiles/
         }
     ];
 
@@ -44,14 +60,45 @@ const ThuVienPBL = () => {
         navigate(`/thu-vien-pbl-xem?name=${encodeURIComponent(project.title)}&cat=${encodeURIComponent(project.categoryText)}`);
     };
 
+    const handleDownload = async (project) => {
+        setDownloadingId(project.id);
+        // URL tới file: dùng đường dẫn trong /public (mô phỏng local) hoặc API backend thực tế.
+        // Ví dụ local (file đặt trong my-pbl3/public/wordfiles/): `/wordfiles/${project.fileName}`
+        // Ví dụ backend thực:  `http://localhost:8080/api/reports/download/${project.fileName}`
+        const fileUrl = `/wordfiles/${project.fileName}`;
+        await handleDownloadWithSaveAs(fileUrl, project.fileName);
+        setDownloadingId(null);
+    };
+
+    // Màu sắc của toast thông báo
+    const toastColors = {
+        success: { bg: '#d1fae5', border: '#10b981', text: '#065f46' },
+        error:   { bg: '#fee2e2', border: '#ef4444', text: '#991b1b' },
+    };
+
     return (
         <div className="dashboard-body" style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
-            <header className="navbar" style={{ backgroundColor: '#003366', color: 'white', padding: '10px 50px', display: 'flex', alignItems: 'center' }}>
+            {/* ── Toast thông báo kết quả tải ── */}
+            {toast.visible && toast.type && (
+                <div style={{
+                    position: 'fixed', bottom: '30px', right: '30px', zIndex: 9999,
+                    padding: '14px 22px', borderRadius: '10px', fontWeight: 600,
+                    fontSize: '0.95rem', boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                    backgroundColor: toastColors[toast.type]?.bg,
+                    border: `1.5px solid ${toastColors[toast.type]?.border}`,
+                    color: toastColors[toast.type]?.text,
+                    transition: 'opacity 0.3s ease',
+                    maxWidth: '380px'
+                }}>
+                    {toast.message}
+                </div>
+            )}
+            <header className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 40px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 1000 }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <i className="fas fa-book-open" style={{ fontSize: '28px' }}></i>
-                    <div>
-                        <h1 style={{ fontSize: '1.2rem', margin: 0 }}>Hệ thống PBL</h1>
-                        <p style={{ fontSize: '0.8rem', margin: 0, opacity: 0.8 }}>Project-Based Learning Portal</p>
+                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '4px' }} />
+                    <div style={{ textAlign: 'left' }}>
+                        <h1 style={{ margin: 0, fontSize: '20px' }}>Hệ thống PBL</h1>
+                        <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
                     </div>
                 </div>
                 {user && (
@@ -61,7 +108,7 @@ const ThuVienPBL = () => {
                 )}
             </header>
 
-            <main className="container" style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
+            <main className="container-fluid" style={{ maxWidth: '100%', margin: '40px auto', padding: '0 40px', boxSizing: 'border-box' }}>
                 <div style={{ textAlign: 'left', marginBottom: '25px' }}>
                     <button 
                         onClick={() => navigate(-1)} 
@@ -129,9 +176,21 @@ const ThuVienPBL = () => {
                                     </button>
                                     <button 
                                         className="btn blue" 
-                                        style={{ padding: '8px 15px', fontSize: '0.85rem', width: 'auto', color: 'white' }}
+                                        style={{
+                                            padding: '8px 15px', fontSize: '0.85rem',
+                                            width: 'auto', color: 'white',
+                                            opacity: (downloading && downloadingId === project.id) ? 0.7 : 1,
+                                            cursor: (downloading && downloadingId === project.id) ? 'not-allowed' : 'pointer',
+                                            display: 'flex', alignItems: 'center', gap: '6px'
+                                        }}
+                                        onClick={() => handleDownload(project)}
+                                        disabled={downloading && downloadingId === project.id}
                                     >
-                                        Tải về
+                                        {downloading && downloadingId === project.id ? (
+                                            <><i className="fas fa-spinner fa-spin"></i> Đang xử lý...</>
+                                        ) : (
+                                            <><i className="fas fa-download"></i> Tải về</>
+                                        )}
                                     </button>
                                 </div>
                             </div>

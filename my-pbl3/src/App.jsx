@@ -23,6 +23,8 @@ import StudentResults from './pages/StudentResults';
 import LecturerTopicManagement from './pages/LecturerTopicManagement';
 import LecturerGrading from './pages/LecturerGrading';
 import StudentPlanTracking from './pages/StudentPlanTracking';
+import LecturerDeadlineManagement from './pages/LecturerDeadlineManagement';
+import LecturerPublishRequest from './pages/LecturerPublishRequest';
 import SV_TruyCapLopPBL from './pages/SV_TruyCapLopPBL';
 import SV_WorkShop from './pages/SV_WorkShop';
 import ThuVienPBL from './pages/ThuVienPBL';
@@ -145,6 +147,8 @@ function App() {
           <Route path="/lecturer-topics" element={<LecturerTopicManagement />} />
           <Route path="/lecturer-grading" element={<LecturerGrading />} />
           <Route path="/student-plan-tracking" element={<StudentPlanTracking />} />
+          <Route path="/lecturer-deadlines" element={<LecturerDeadlineManagement />} />
+          <Route path="/lecturer-publish" element={<LecturerPublishRequest />} />
           <Route path="/sv-truy-cap-lop" element={<SV_TruyCapLopPBL />} />
           <Route path="/sv-workshop" element={<SV_WorkShop />} />
           <Route path="/thu-vien-pbl" element={<ThuVienPBL />} />
