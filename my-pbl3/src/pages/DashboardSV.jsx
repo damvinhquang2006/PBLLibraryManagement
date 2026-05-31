@@ -21,7 +21,7 @@ const DashboardSV = () => {
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '4px' }} />
                     <div style={{ textAlign: 'left' }}>
-                        <h1 style={{ margin: 0, fontSize: '20px' }}>Hệ thống PBL</h1>
+                        <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 'bold' }}>Hệ thống PBL</h1>
                         <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
                     </div>
                 </div>
@@ -99,30 +99,41 @@ const DashboardSV = () => {
 
             <main className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '50px 20px' }}>
                 <div className="welcome-text" style={{ textAlign: 'center', marginBottom: '50px' }}>
-                    <h2 style={{ color: '#003366', fontSize: '2.2rem', marginBottom: '10px' }}>Dashboard Sinh viên</h2>
-                    <p style={{ color: '#666', fontSize: '1.1rem' }}>Chào mừng bạn đến với Hệ thống PBL</p>
+                    <h2 style={{ color: '#003366', fontSize: '2.2rem', marginBottom: '10px', fontWeight: 'bold' }}>Dashboard Sinh viên</h2>
+                    <p style={{ color: '#666', fontSize: '1.1rem' }}>Chào mừng bạn đến với Hệ thống quản lý học tập PBL</p>
                 </div>
 
+                {/* Grid 3 thẻ Card song song đồng bộ */}
                 <div className="card-grid" style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
                     
-                    <div className="card clickable" onClick={() => navigate(`/sv-truy-cap-lop?userID=${user?.email}&role=SV`)} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    {/* Thẻ 1: Lớp PBL của tôi */}
+                    <div className="card clickable" onClick={() => navigate(`/sv-truy-cap-lop?userID=${user?.email}&role=SV`)} style={{ flex: '0 1 320px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-graduation-cap" style={{ fontSize: '24px' }}></i>
                         </div>
-                        <h3 style={{ marginBottom: '15px' }}>Lớp PBL của tôi</h3>
-                        <p style={{ color: '#666' }}>Xem và quản lý các lớp học PBL mà bạn đang tham gia</p>
+                        <h3 style={{ marginBottom: '15px', color: '#003366', fontWeight: 'bold' }}>Lớp PBL của tôi</h3>
+                        <p style={{ color: '#666', fontSize: '0.95rem' }}>Xem và quản lý các lớp học PBL mà bạn đang tham gia</p>
                     </div>
 
-                    <div className="card clickable" onClick={() => navigate('/thu-vien-pbl')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
+                    {/* Thẻ 2: Thư viện PBL */}
+                    <div className="card clickable" onClick={() => navigate('/thu-vien-pbl')} style={{ flex: '0 1 320px', textAlign: 'center', padding: '40px 20px' }}>
                         <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
                             <i className="fas fa-columns" style={{ fontSize: '24px' }}></i>
                         </div>
-                        <h3 style={{ marginBottom: '15px' }}>Thư viện PBL</h3>
-                        <p style={{ color: '#666' }}>Truy cập tài liệu, mẫu dự án và tài nguyên học tập</p>
+                        <h3 style={{ marginBottom: '15px', color: '#003366', fontWeight: 'bold' }}>Thư viện PBL</h3>
+                        <p style={{ color: '#666', fontSize: '0.95rem' }}>Truy cập tài liệu, mẫu dự án và tài nguyên học tập mẫu</p>
+                    </div>
+
+                    {/* Thẻ 3: Kết quả & Lịch sử PBL (Mới - Điều hướng sang Trang riêng) */}
+                    <div className="card clickable" onClick={() => navigate('/student-results')} style={{ flex: '0 1 320px', textAlign: 'center', padding: '40px 20px' }}>
+                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
+                            <i className="fas fa-file-invoice" style={{ fontSize: '24px' }}></i>
+                        </div>
+                        <h3 style={{ marginBottom: '15px', color: '#003366', fontWeight: 'bold' }}>Kết quả & Lịch sử PBL</h3>
+                        <p style={{ color: '#666', fontSize: '0.95rem' }}>Xem lại chi tiết điểm số, đánh giá và nhận xét qua từng học kỳ</p>
                     </div>
 
                 </div>
-
 
             </main>
         </div>

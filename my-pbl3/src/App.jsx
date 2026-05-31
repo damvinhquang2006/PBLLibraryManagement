@@ -13,12 +13,12 @@ import MyClassesGV from './pages/MyClassesGV';
 import ClassDashboardGV from './pages/ClassDashboardGV';
 
 import Profile from './pages/Profile';
-import StudentGroupSpace from './pages/StudentGroupSpace';
+
 import Statistics from './pages/Statistics';
 import AccountManagement from './pages/AccountManagement';
 import PBLApproval from './pages/PBLApproval';
 
-import StudentSubmission from './pages/StudentSubmission';
+
 import StudentResults from './pages/StudentResults';
 import LecturerTopicManagement from './pages/LecturerTopicManagement';
 import LecturerGrading from './pages/LecturerGrading';
@@ -137,12 +137,12 @@ function App() {
           <Route path="/class-dashboard-gv" element={<ClassDashboardGV />} />
 
           <Route path="/profile" element={<Profile />} />
-          <Route path="/student-group-space" element={<StudentGroupSpace />} />
+  
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/account-management" element={<AccountManagement />} />
           <Route path="/pbl-approval" element={<PBLApproval />} />
 
-          <Route path="/student-submission" element={<StudentSubmission />} />
+
           <Route path="/student-results" element={<StudentResults />} />
           <Route path="/lecturer-topics" element={<LecturerTopicManagement />} />
           <Route path="/lecturer-grading" element={<LecturerGrading />} />
