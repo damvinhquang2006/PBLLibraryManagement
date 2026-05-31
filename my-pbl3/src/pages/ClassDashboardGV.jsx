@@ -15,16 +15,56 @@ const ClassDashboardGV = () => {
     };
 
     return (
-        <div className="dashboard-body" style={{ position: 'absolute', top: 0, left: 0, width: '100vw', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
+        <div className="dashboard-body" style={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            width: '100vw', 
+            minHeight: '100vh', 
+            backgroundImage: 'linear-gradient(rgba(248, 249, 250, 0.85), rgba(248, 249, 250, 0.85)), url("/picture/dai-hoc-bach-khoa-da-nang-2.jpg")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+            backgroundRepeat: 'no-repeat',
+            overflowY: 'auto'
+        }}>
             
             <header className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 40px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 1000 }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '4px' }} />
+                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '55px', height: '55px', objectFit: 'contain', borderRadius: '4px' }} />
                     <div style={{ textAlign: 'left' }}>
                         <h1 style={{ margin: 0, fontSize: '20px' }}>Hệ thống PBL</h1>
                         <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
                     </div>
                 </div>
+                
+                {/* Navbar Navigation Items */}
+                <ul style={{ display: 'flex', listStyle: 'none', gap: '10px', margin: 0, padding: 0, alignItems: 'center' }}>
+                    {[
+                        { title: 'Quản lý Deadline', path: '/lecturer-deadlines' },
+                        { title: 'Quản lý Đề tài PBL', path: '/lecturer-topics' },
+                        { title: 'Đánh giá Tiến độ' }
+                    ].map((item, idx) => (
+                        <li 
+                            key={idx}
+                            onClick={() => item.path && navigate(item.path)}
+                            style={{ 
+                                color: 'white', 
+                                fontSize: '18px', 
+                                fontWeight: 'bold', 
+                                cursor: 'pointer',
+                                padding: '8px 15px',
+                                borderRadius: '4px',
+                                transition: 'background-color 0.2s',
+                                userSelect: 'none'
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        >
+                            {item.title}
+                        </li>
+                    ))}
+                </ul>
 
                 <div style={{ position: 'relative' }}>
                     <div 
@@ -93,8 +133,8 @@ const ClassDashboardGV = () => {
                 </div>
             </header>
 
-            <main className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '50px 20px' }}>
-                <div className="class-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+            <main className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', textAlign: 'center' }}>
+                <div className="class-header" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '20px' }}>
                     <button 
                         onClick={() => navigate('/my-classes-gv')} 
                         className="back-btn"
@@ -102,39 +142,15 @@ const ClassDashboardGV = () => {
                     >
                         <i className="fas fa-arrow-left"></i> Danh sách lớp
                     </button>
-                    <h2 style={{ color: '#003366', margin: 0 }}>Không gian lớp: 24T_DT01</h2>
-                    <div style={{ width: '150px' }}></div>
                 </div>
 
-                <div className="card-grid" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                    {[
-                        { title: 'Quản lý deadline và nhiệm vụ', icon: 'fa-tasks', primary: true, path: '/lecturer-deadlines' },
-                        { title: 'Tạo milestone', icon: 'fa-flag' },
-                        { title: 'Quản lý đề tài PBL', icon: 'fa-project-diagram', path: '/lecturer-topics' },
-                        { title: 'Đánh giá báo cáo tiến độ', icon: 'fa-clipboard-check' },
-                        { title: 'Quản lý điểm', icon: 'fa-sort-numeric-up', path: '/lecturer-grading' },
-                        { title: 'Yêu cầu xuất bản PBL', icon: 'fa-upload', path: '/lecturer-publish' }
-                    ].map((item, idx) => (
-                        <div 
-                            key={idx} 
-                            onClick={() => item.path && navigate(item.path)}
-                            className="card clickable" 
-                            style={{ 
-                                flex: '0 1 300px', 
-                                textAlign: 'center', 
-                                padding: '30px 20px', 
-                                background: item.primary ? '#eef2ff' : '#fff', 
-                                borderRadius: '12px', 
-                                boxShadow: '0 4px 12px rgba(0,0,0,0.05)', 
-                                border: item.primary ? '2px solid #0066cc' : '1px solid #eee' 
-                            }}
-                        >
-                            <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '15px', borderRadius: '8px' }}>
-                                <i className={`fas ${item.icon}`} style={{ fontSize: '24px' }}></i>
-                            </div>
-                            <h3 style={{ fontSize: '18px', color: item.primary ? '#0066cc' : '#333', fontWeight: item.primary ? 'bold' : '600' }}>{item.title}</h3>
-                        </div>
-                    ))}
+                <div style={{ padding: '60px 20px' }}>
+                    <h1 style={{ color: '#003366', fontSize: '3.2rem', fontWeight: 'bold', marginBottom: '20px', letterSpacing: '-0.5px' }}>
+                        Không Gian Lớp: 24T_DT01
+                    </h1>
+                    <p style={{ color: '#4a5568', fontSize: '1.25rem', lineHeight: '1.8', maxWidth: '750px', margin: '0 auto', fontWeight: '500' }}>
+                        Chào mừng giảng viên. Lớp học hiện đang hoạt động bình thường. Vui lòng bấm chọn các chức năng **"Quản lý Deadline"**, **"Quản lý Đề tài PBL"** hoặc **"Đánh giá Tiến độ"** ở thanh điều hướng phía trên để bắt đầu làm việc.
+                    </p>
                 </div>
             </main>
         </div>

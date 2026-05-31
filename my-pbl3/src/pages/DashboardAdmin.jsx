@@ -34,17 +34,58 @@ const DashboardAdmin = () => {
     const [showMenu, setShowMenu] = useState(false);
 
     return (
-        <div className="dashboard-body" style={{ position: 'absolute', top: 0, left: 0, width: '100vw', minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
+        <div className="dashboard-body" style={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            width: '100vw', 
+            minHeight: '100vh', 
+            backgroundImage: 'linear-gradient(rgba(248, 249, 250, 0.85), rgba(248, 249, 250, 0.85)), url("/picture/dai-hoc-bach-khoa-da-nang-2.jpg")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+            backgroundRepeat: 'no-repeat',
+            overflowY: 'auto'
+        }}>
             
             <header className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 40px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 1000 }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '4px' }} />
+                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '55px', height: '55px', objectFit: 'contain', borderRadius: '4px' }} />
                     <div style={{ textAlign: 'left' }}>
                         <h1 style={{ margin: 0, fontSize: '20px' }}>Hệ thống PBL</h1>
                         <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
                     </div>
                 </div>
                 
+                {/* Navbar Navigation Items */}
+                <ul style={{ display: 'flex', listStyle: 'none', gap: '10px', margin: 0, padding: 0, alignItems: 'center' }}>
+                    {[
+                        { title: 'Quản lý lớp', path: '/my-classes-admin' },
+                        { title: 'Quản lý thư viện PBL', path: '/thu-vien-pbl' },
+                        { title: 'Quản lý tài khoản', path: '/account-management' },
+                        { title: 'Xem thống kê PBL', path: '/statistics' }
+                    ].map((item, idx) => (
+                        <li 
+                            key={idx}
+                            onClick={() => item.path && navigate(item.path)}
+                            style={{ 
+                                color: 'white', 
+                                fontSize: '18px', 
+                                fontWeight: 'bold', 
+                                cursor: 'pointer',
+                                padding: '8px 15px',
+                                borderRadius: '4px',
+                                transition: 'background-color 0.2s',
+                                userSelect: 'none'
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        >
+                            {item.title}
+                        </li>
+                    ))}
+                </ul>
+
                 <div style={{ position: 'relative' }}>
                     <div 
                         className="user-info clickable" 
@@ -104,57 +145,15 @@ const DashboardAdmin = () => {
                 </div>
             </header>
 
-            <main className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '50px 20px' }}>
-                <div className="welcome-text" style={{ textAlign: 'center', marginBottom: '50px' }}>
-                    <h2 style={{ color: '#003366', fontSize: '2.2rem', marginBottom: '10px' }}>Dashboard Quản trị viên</h2>
-                    <p style={{ color: '#666', fontSize: '1.1rem' }}>Bảng điều khiển quản lý toàn bộ hệ thống PBL</p>
+            <main className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px', textAlign: 'center' }}>
+                <div style={{ padding: '80px 20px' }}>
+                    <h1 style={{ color: '#003366', fontSize: '3.2rem', fontWeight: 'bold', marginBottom: '20px', letterSpacing: '-0.5px' }}>
+                        Dashboard Quản Trị Viên
+                    </h1>
+                    <p style={{ color: '#4a5568', fontSize: '1.25rem', lineHeight: '1.8', maxWidth: '750px', margin: '0 auto', fontWeight: '500' }}>
+                        Chào mừng Quản trị viên. Nơi vận hành toàn bộ hệ thống đăng ký và quản lý tài liệu PBL. Các công cụ quản trị bao gồm **"Quản lý lớp"**, **"Quản lý thư viện PBL"**, **"Quản lý tài khoản"** và **"Xem thống kê PBL"** đã được di chuyển lên thanh menu điều hướng phía trên.
+                    </p>
                 </div>
-
-                <div className="card-grid" style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
-                    
-                    <div className="card clickable" onClick={() => navigate('/my-classes-admin')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
-                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
-                            <i className="fas fa-university" style={{ fontSize: '24px' }}></i>
-                        </div>
-                        <h3 style={{ marginBottom: '15px' }}>Quản lý lớp</h3>
-                        <p style={{ color: '#666' }}>Tạo, chỉnh sửa và cấu hình các lớp học PBL</p>
-                    </div>
-
-                    <div className="card clickable" onClick={() => navigate('/thu-vien-pbl')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
-                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
-                            <i className="fas fa-archive" style={{ fontSize: '24px' }}></i>
-                        </div>
-                        <h3 style={{ marginBottom: '15px' }}>Quản lý thư viện PBL</h3>
-                        <p style={{ color: '#666' }}>Tổ chức và quản lý các tài liệu, đồ án trong thư viện</p>
-                    </div>
-                    
-                    <div className="card clickable" onClick={() => navigate('/account-management')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
-                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
-                            <i className="fas fa-users-cog" style={{ fontSize: '24px' }}></i>
-                        </div>
-                        <h3 style={{ marginBottom: '15px' }}>Quản lý tài khoản</h3>
-                        <p style={{ color: '#666' }}>Quản lý tài khoản người dùng của giảng viên, sinh viên</p>
-                    </div>
-
-                    <div className="card clickable" onClick={() => navigate('/pbl-approval')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
-                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
-                            <i className="fas fa-check-circle" style={{ fontSize: '24px' }}></i>
-                        </div>
-                        <h3 style={{ marginBottom: '15px' }}>Duyệt xuất bản PBL</h3>
-                        <p style={{ color: '#666' }}>Xem xét và phê duyệt các đồ án xuất sắc lên thư viện</p>
-                    </div>
-                    
-                    <div className="card clickable" onClick={() => navigate('/statistics')} style={{ flex: '0 1 350px', textAlign: 'center', padding: '40px 20px' }}>
-                        <div className="icon-box blue" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', width: '60px', height: '60px', marginBottom: '20px', borderRadius: '8px' }}>
-                            <i className="fas fa-chart-bar" style={{ fontSize: '24px' }}></i>
-                        </div>
-                        <h3 style={{ marginBottom: '15px' }}>Xem thống kê PBL</h3>
-                        <p style={{ color: '#666' }}>Báo cáo và số liệu đánh giá về tình hình học tập và đồ án</p>
-                    </div>
-
-                </div>
-
-
             </main>
         </div>
     );

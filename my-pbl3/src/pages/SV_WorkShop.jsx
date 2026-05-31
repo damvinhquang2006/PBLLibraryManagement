@@ -132,7 +132,8 @@ const SV_WorkShop = () => {
                 { moc: "Milestone 1", noiDung: "Phân tích yêu cầu và thiết kế Database", han: "15/02/2026", status: "done", statusText: "Công khai" }
             ],
             nopBai: [
-                { giaiDoan: "GĐ1", han: "15/02/2026", file: "bao-cao-pbl3-cang.pdf", status: "done", statusText: "Đã nộp", uploadText: "Upload lại" }
+                { giaiDoan: "GĐ1 (Báo cáo tiến độ)", han: "15/02/2026", file: "bao-cao-pbl3-cang.pdf", status: "done", statusText: "Đã nộp", uploadText: "Upload lại" },
+                { giaiDoan: "Báo cáo cuối kỳ", han: "15/05/2026", file: "Chưa nộp", status: "pending", statusText: "Chưa nộp", uploadText: "Nộp báo cáo" }
             ],
             diem: { so: "8.8", xepLoai: "Giỏi" }
         }
@@ -266,6 +267,53 @@ const SV_WorkShop = () => {
         showToast("Đã gửi yêu cầu đổi đề tài lên giảng viên duyệt.");
     };
 
+    // Xử lý nộp báo cáo và hỏi ý kiến xuất bản nếu là báo cáo cuối kỳ
+    const handleUpload = (nb, idx) => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.pdf,.docx,.doc';
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const updatedNopBai = [...classData.nopBai];
+                updatedNopBai[idx] = {
+                    ...updatedNopBai[idx],
+                    file: file.name,
+                    status: "done",
+                    statusText: "Đã nộp",
+                    uploadText: "Upload lại"
+                };
+
+                const updatedDatabase = {
+                    ...database,
+                    [currentClassID]: {
+                        ...classData,
+                        nopBai: updatedNopBai
+                    }
+                };
+                setDatabase(updatedDatabase);
+                setClassData(updatedDatabase[currentClassID]);
+
+                showToast(`Nộp file ${file.name} thành công!`);
+
+                if (nb.giaiDoan === "Báo cáo cuối kỳ") {
+                    localStorage.setItem('finalReportCompleted_' + currentClassID, 'true');
+                    setTimeout(() => {
+                        const confirmPublish = window.confirm(
+                            "Chúc mừng nhóm bạn đã hoàn thành nộp Báo cáo cuối kỳ!\n\nBạn có muốn XUẤT BẢN bài báo cáo cuối kỳ này lên Thư viện số PBL ngay bây giờ không? (Dự án sẽ xuất bản trực tiếp mà không cần qua Admin phê duyệt)."
+                        );
+                        if (confirmPublish) {
+                            showToast("Đồ án đã được XUẤT BẢN lên Thư viện số PBL thành công!", "success");
+                        } else {
+                            showToast("Đã lưu báo cáo cuối kỳ thành công.", "success");
+                        }
+                    }, 500);
+                }
+            }
+        };
+        fileInput.click();
+    };
+
     if (!classData) return <div style={{ padding: '40px', fontSize: '1.2rem', color: '#003366', fontWeight: 'bold' }}>Đang tải thông tin lớp học...</div>;
 
     const tableHeaderStyle = { padding: '15px', textAlign: 'left', borderBottom: '2px solid #eee', color: '#003366', fontWeight: 'bold' };
@@ -300,7 +348,7 @@ const SV_WorkShop = () => {
 
             <header className="navbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 40px', width: '100%', boxSizing: 'border-box', position: 'relative', zIndex: 1000 }}>
                 <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '4px' }} />
+                    <img src="/picture/ITFDUT.jpg" alt="ITFDUT Logo" style={{ width: '55px', height: '55px', objectFit: 'contain', borderRadius: '4px' }} />
                     <div style={{ textAlign: 'left' }}>
                         <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 'bold' }}>Hệ thống PBL</h1>
                         <p style={{ margin: 0, fontSize: '12px', opacity: 0.8 }}>Project-Based Learning Portal</p>
@@ -768,7 +816,7 @@ const SV_WorkShop = () => {
                                             <td style={tableCellStyle}>
                                                 <span style={{ padding: '4px 10px', borderRadius: '4px', fontSize: '0.8rem', backgroundColor: '#e6f7ee', color: '#28a745', fontWeight: 'bold' }}>{nb.statusText}</span>
                                             </td>
-                                            <td style={tableCellStyle}><button className="btn" style={{ width: 'auto', fontSize: '0.8rem', padding: '6px 12px', cursor: 'pointer' }}>{nb.uploadText}</button></td>
+                                            <td style={tableCellStyle}><button className="btn" onClick={() => handleUpload(nb, idx)} style={{ width: 'auto', fontSize: '0.8rem', padding: '6px 12px', cursor: 'pointer' }}>{nb.uploadText}</button></td>
                                         </tr>
                                     ))}
                                 </tbody>
